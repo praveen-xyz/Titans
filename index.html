@@ -1,1 +1,439 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Titans Student Hub</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --card-bg: rgba(255,255,255,0.8);
+  --accent: #007bff;
+  --shadow: rgba(0,0,0,0.1);
+  --gradient: linear-gradient(135deg, #007bff, #00d4ff);
+}
+
+body.dark {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-bg: rgba(30,30,30,0.7);
+  --accent: #0d6efd;
+  --shadow: rgba(255,255,255,0.05);
+  --gradient: linear-gradient(135deg, #0d6efd, #007bff);
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.4s, color 0.4s;
+  overflow-x: hidden;
+}
+
+/* Splash Screen */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: var(--gradient);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2em;
+  z-index: 9999;
+  animation: fadeOut 1.3s ease forwards;
+  animation-delay: 2.2s;
+}
+#splash-logo {
+  font-size: 2.3em;
+  font-weight: 700;
+  animation: popIn 1.2s ease;
+}
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  background: var(--gradient);
+  color: white;
+  padding: 18px 20px;
+  font-size: 1.5em;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 12px var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: 0.4s;
+  transform: translateY(-100%);
+  animation: slideDown 1.2s ease forwards 2.4s;
+}
+@keyframes slideDown {
+  to { transform: translateY(0); }
+}
+
+.dark-mode-toggle {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+.dark-mode-toggle:hover { transform: rotate(20deg); }
+
+.content {
+  padding: 20px;
+  padding-bottom: 90px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease forwards 2.6s;
+}
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, background 0.4s, max-height 0.4s ease;
+  overflow: hidden;
+  max-height: 90px;
+  cursor: pointer;
+}
+.card:hover { transform: scale(1.02); }
+.card.expanded { max-height: 300px; }
+.card-content { opacity: 0; transition: opacity 0.3s ease; }
+.card.expanded .card-content { opacity: 1; }
+
+.complete {
+  border-left: 5px solid limegreen;
+  opacity: 0.9;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card-bg);
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #ccc;
+  padding: 8px 0;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+nav button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+nav button.active { color: var(--accent); transform: translateY(-3px); }
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  backdrop-filter: blur(6px);
+  font-size: 1em;
+  transition: 0.3s;
+}
+input:focus {
+  outline: none;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+button.primary {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: 0.3s ease;
+}
+button.primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.todo-text {
+  flex: 1;
+  margin-left: 10px;
+  word-break: break-word;
+  transition: 0.3s;
+}
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.todo-buttons { display: flex; gap: 6px; }
+
+.fade-in { animation: fadeIn 0.5s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-out { animation: slideOut 0.4s forwards; }
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
+
+/* --- Chat Animation --- */
+.typing {
+  display: inline-block;
+  width: 1ch;
+  overflow: hidden;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Splash Screen -->
+<div id="splash">
+  <div id="splash-logo">Titans Student Hub</div>
+  <div style="font-size:0.6em;opacity:0.8;">Connecting Learners ⚡</div>
+</div>
+
+<header>
+  <span id="headerText">Titans Student Hub</span>
+  <button class="dark-mode-toggle" id="darkToggle"><i data-lucide="moon"></i></button>
+</header>
+
+<div class="content" id="mainContent"></div>
+
+<nav>
+  <button id="tasksTab" onclick="setActiveTab('tasks')"><i data-lucide='book-open'></i><span>Tasks</span></button>
+  <button id="todoTab" onclick="setActiveTab('todo')"><i data-lucide='check-circle'></i><span>To-Do</span></button>
+  <button id="chatTab" onclick="setActiveTab('chat')"><i data-lucide='bot'></i><span>AI Chat</span></button>
+  <button id="socialTab" onclick="setActiveTab('social')"><i data-lucide='users'></i><span>Social</span></button>
+</nav>
+
+<script>
+/* --- DARK MODE with LOCALSTORAGE --- */
+const toggle = document.getElementById("darkToggle");
+if (localStorage.getItem("darkMode") === "true") document.body.classList.add("dark");
+updateDarkIcon();
+
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+  updateDarkIcon();
+});
+function updateDarkIcon() {
+  const icon = document.body.classList.contains("dark") ? "sun" : "moon";
+  toggle.innerHTML = `<i data-lucide="${icon}"></i>`;
+  lucide.createIcons();
+}
+
+/* --- TAB HANDLING --- */
+function setActiveTab(tab) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  document.getElementById(tab + "Tab").classList.add("active");
+  renderTab(tab);
+}
+
+/* --- TABS CONTENT --- */
+function renderTab(tab) {
+  const content = document.getElementById("mainContent");
+  if (tab === "tasks") {
+    content.innerHTML = `
+      <h2>Class Tasks</h2>
+      <div class='card fade-in' onclick='toggleExpand(this)'>
+        <h3>Data Structures Lecture</h3>
+        <div class='card-content'><p>Study Heap, Graph & Tree implementations with code examples.</p></div>
+      </div>
+      <div class='card fade-in' onclick='toggleExpand(this)'>
+        <h3>Web Project</h3>
+        <div class='card-content'><p>Build a modern student hub web app with animations and dark mode.</p></div>
+      </div>
+      <div class='card fade-in' onclick='toggleExpand(this)'>
+        <h3>IPR Session</h3>
+        <div class='card-content'><p>Learn about Intellectual Property Rights and its impact in innovation.</p></div>
+      </div>
+    `;
+  } else if (tab === "todo") {
+    content.innerHTML = `
+      <h2>To-Do List</h2>
+      <input type='text' id='todoInput' placeholder='Add a new task...' />
+      <button class='primary' onclick='addTodo()'>Add Task</button>
+      <div id='todoList'></div>
+    `;
+    loadTodos();
+  } else if (tab === "chat") {
+    content.innerHTML = `
+      <h2>AI Chat Assistant</h2>
+      <div id='chatBox' style='max-height:400px;overflow-y:auto;padding:10px;border-radius:12px;background:var(--card-bg);backdrop-filter:blur(6px);box-shadow:0 0 8px var(--shadow);margin-bottom:10px;'>
+        <div class='fade-in'><strong>AI:</strong> Hi! I’m your study assistant 🤖. How can I help you today?</div>
+      </div>
+      <div style='display:flex;gap:6px;'>
+        <textarea id='chatInput' placeholder='Ask something...' style='flex:1;resize:none;height:50px;'></textarea>
+        <button class='primary' onclick='sendMessage()'>Send</button>
+      </div>
+    `;
+  } else if (tab === "social") {
+    content.innerHTML = `
+      <h2>Social Feed</h2>
+      <div class='card fade-in'><strong>Ravi:</strong> Finished my Python app! 🔥</div>
+      <div class='card fade-in'><strong>Meena:</strong> Excited for tech fest 🎉</div>
+    `;
+  }
+  lucide.createIcons();
+}
+function toggleExpand(card){ card.classList.toggle("expanded"); }
+
+/* --- TODO LIST --- */
+let todos = [];
+function loadTodos(){
+  const saved = localStorage.getItem("todos");
+  todos = saved ? JSON.parse(saved) : [];
+  renderTodos();
+}
+function saveTodos(){ localStorage.setItem("todos", JSON.stringify(todos)); }
+function addTodo(){
+  const input = document.getElementById("todoInput");
+  const text = input.value.trim();
+  if(!text) return;
+  todos.push({id: Date.now(), text, completed: false});
+  saveTodos(); renderTodos(); input.value="";
+}
+function toggleTodo(id){
+  const todo = todos.find(t=>t.id===id);
+  todo.completed = !todo.completed;
+  saveTodos(); renderTodos();
+}
+function deleteTodo(id){
+  const el=document.querySelector(`[data-id='${id}']`);
+  el.classList.add("slide-out");
+  setTimeout(()=>{
+    todos=todos.filter(t=>t.id!==id);
+    saveTodos(); renderTodos();
+  },350);
+}
+function renderTodos(){
+  const list=document.getElementById("todoList");
+  if(!list) return;
+  list.innerHTML="";
+  todos.forEach(t=>{
+    const div=document.createElement("div");
+    div.className=`card todo-item fade-in ${t.completed?"completed":""}`;
+    div.dataset.id=t.id;
+    div.innerHTML=`
+      <div class='todo-text'>${t.text}</div>
+      <div class='todo-buttons'>
+        <button class='primary' style='background:${t.completed?"orange":"limegreen"};' onclick='toggleTodo(${t.id})'>
+          <i data-lucide='${t.completed?"rotate-ccw":"check"}'></i>
+        </button>
+        <button class='primary' style='background:red;' onclick='deleteTodo(${t.id})'>
+          <i data-lucide='trash-2'></i>
+        </button>
+      </div>`;
+    list.appendChild(div);
+  });
+  lucide.createIcons();
+}
+
+/* --- GEMINI READY CHAT (Animated) --- */
+async function sendMessage(){
+  const input=document.getElementById("chatInput");
+  const chatBox=document.getElementById("chatBox");
+  const userMsg=input.value.trim();
+  if(!userMsg) return;
+
+  // Display user message
+  const userDiv=document.createElement("div");
+  userDiv.className="fade-in";
+  userDiv.innerHTML=`<strong>You:</strong> ${userMsg}`;
+  chatBox.appendChild(userDiv);
+
+  // Typing indicator
+  const typingDiv=document.createElement("div");
+  typingDiv.className="fade-in";
+  typingDiv.innerHTML=`<strong>AI:</strong> <span class="typing">...</span>`;
+  chatBox.appendChild(typingDiv);
+  chatBox.scrollTop=chatBox.scrollHeight;
+
+  // ✅ Replace with your Gemini API key
+  const GEMINI_API_KEY = "AIzaSyDDo2mP0qVzdCuNFnJhklwxa-UeRnGPY_8";
+  let replyText = "Hmm... I couldn’t fetch a response.";
+
+  try {
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY,
+      {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          contents: [{role: "user", parts: [{text: userMsg}]}]
+        })
+      }
+    );
+    const data = await response.json();
+    replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn’t generate a reply right now.";
+  } catch (err) {
+    replyText = "⚠️ Error connecting to Gemini API.";
+    console.error(err);
+  }
+
+  // Remove typing animation and show reply
+  typingDiv.innerHTML=`<strong>AI:</strong> <span class="fade-in">${replyText}</span>`;
+  chatBox.scrollTop=chatBox.scrollHeight;
+  input.value="";
+}
+
+/* --- INIT --- */
+window.addEventListener("DOMContentLoaded",()=>{
+  lucide.createIcons();
+  setActiveTab("todo");
+});
+</script>
+</body>
+</html>
