@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titans Student Hub</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -34,30 +33,56 @@ body {
   overflow-x: hidden;
 }
 
-/* Splash Screen */
+/* ======================= SPLASH SCREEN ======================= */
 #splash {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   background: var(--gradient);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 2em;
+  text-align: center;
   z-index: 9999;
+  overflow: hidden;
   animation: fadeOut 1.3s ease forwards;
-  animation-delay: 2.2s;
+  animation-delay: 2.5s;
+  transition: all 0.4s ease;
 }
+
 #splash-logo {
-  font-size: 2.3em;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 700;
-  animation: popIn 1.2s ease;
+  letter-spacing: 0.5px;
+  animation: popIn 1.3s ease;
 }
+
+#splash-subtitle {
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  opacity: 0.8;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  animation: fadeIn 1.4s ease 0.6s forwards;
+  opacity: 0;
+}
+
+/* Mobile optimization */
+@media (max-height: 600px) {
+  #splash-logo { font-size: 1.6rem; }
+  #splash-subtitle { font-size: 0.8rem; }
+}
+
 @keyframes popIn {
-  0% { transform: scale(0.8); opacity: 0; }
+  0% { transform: scale(0.7); opacity: 0; }
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeOut {
   0% { opacity: 1; }
@@ -80,13 +105,10 @@ header {
   border-bottom-right-radius: 20px;
   box-shadow: 0 4px 12px var(--shadow);
   backdrop-filter: blur(10px);
-  transition: 0.4s;
   transform: translateY(-100%);
   animation: slideDown 1.2s ease forwards 2.4s;
 }
-@keyframes slideDown {
-  to { transform: translateY(0); }
-}
+@keyframes slideDown { to { transform: translateY(0); } }
 
 .dark-mode-toggle {
   position: absolute;
@@ -110,9 +132,7 @@ header {
   transform: translateY(30px);
   animation: fadeInUp 1s ease forwards 2.6s;
 }
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
 .card {
   background: var(--card-bg);
@@ -130,11 +150,6 @@ header {
 .card.expanded { max-height: 300px; }
 .card-content { opacity: 0; transition: opacity 0.3s ease; }
 .card.expanded .card-content { opacity: 1; }
-
-.complete {
-  border-left: 5px solid limegreen;
-  opacity: 0.9;
-}
 
 nav {
   position: fixed;
@@ -200,16 +215,8 @@ button.primary:hover {
   align-items: center;
   transition: all 0.3s ease;
 }
-.todo-text {
-  flex: 1;
-  margin-left: 10px;
-  word-break: break-word;
-  transition: 0.3s;
-}
-.todo-item.completed .todo-text {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
+.todo-text { flex: 1; margin-left: 10px; word-break: break-word; transition: 0.3s; }
+.todo-item.completed .todo-text { text-decoration: line-through; opacity: 0.6; }
 .todo-buttons { display: flex; gap: 6px; }
 
 .fade-in { animation: fadeIn 0.5s ease; }
@@ -230,9 +237,7 @@ button.primary:hover {
   overflow: hidden;
   animation: blink 1s steps(1) infinite;
 }
-@keyframes blink {
-  50% { opacity: 0; }
-}
+@keyframes blink { 50% { opacity: 0; } }
 </style>
 </head>
 <body>
@@ -240,11 +245,11 @@ button.primary:hover {
 <!-- Splash Screen -->
 <div id="splash">
   <div id="splash-logo">Titans Student Hub</div>
-  <div style="font-size:0.6em;opacity:0.8;">Connecting Learners ⚡</div>
+  <div id="splash-subtitle">Connecting Learners ⚡</div>
 </div>
 
 <header>
-  <span id="headerText">Titans Student Hub</span>
+  Titans Student Hub
   <button class="dark-mode-toggle" id="darkToggle"><i data-lucide="moon"></i></button>
 </header>
 
@@ -258,58 +263,40 @@ button.primary:hover {
 </nav>
 
 <script>
-/* --- DARK MODE with LOCALSTORAGE --- */
-const toggle = document.getElementById("darkToggle");
-if (localStorage.getItem("darkMode") === "true") document.body.classList.add("dark");
+/* --- DARK MODE --- */
+const toggle=document.getElementById("darkToggle");
+if(localStorage.getItem("darkMode")==="true")document.body.classList.add("dark");
 updateDarkIcon();
-
-toggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-  updateDarkIcon();
-});
-function updateDarkIcon() {
-  const icon = document.body.classList.contains("dark") ? "sun" : "moon";
-  toggle.innerHTML = `<i data-lucide="${icon}"></i>`;
-  lucide.createIcons();
-}
+toggle.addEventListener("click",()=>{document.body.classList.toggle("dark");localStorage.setItem("darkMode",document.body.classList.contains("dark"));updateDarkIcon();});
+function updateDarkIcon(){const icon=document.body.classList.contains("dark")?"sun":"moon";toggle.innerHTML=`<i data-lucide="${icon}"></i>`;lucide.createIcons();}
 
 /* --- TAB HANDLING --- */
-function setActiveTab(tab) {
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById(tab + "Tab").classList.add("active");
+function setActiveTab(tab){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(tab+"Tab").classList.add("active");
   renderTab(tab);
 }
 
-/* --- TABS CONTENT --- */
-function renderTab(tab) {
-  const content = document.getElementById("mainContent");
-  if (tab === "tasks") {
-    content.innerHTML = `
+/* --- TABS --- */
+function renderTab(tab){
+  const content=document.getElementById("mainContent");
+  if(tab==="tasks"){
+    content.innerHTML=`
       <h2>Class Tasks</h2>
-      <div class='card fade-in' onclick='toggleExpand(this)'>
-        <h3>Data Structures Lecture</h3>
-        <div class='card-content'><p>Study Heap, Graph & Tree implementations with code examples.</p></div>
-      </div>
-      <div class='card fade-in' onclick='toggleExpand(this)'>
-        <h3>Web Project</h3>
-        <div class='card-content'><p>Build a modern student hub web app with animations and dark mode.</p></div>
-      </div>
-      <div class='card fade-in' onclick='toggleExpand(this)'>
-        <h3>IPR Session</h3>
-        <div class='card-content'><p>Learn about Intellectual Property Rights and its impact in innovation.</p></div>
-      </div>
+      <div class='card fade-in' onclick='toggleExpand(this)'><h3>Data Structures Lecture</h3><div class='card-content'><p>Study Heap, Graph & Tree implementations with code examples.</p></div></div>
+      <div class='card fade-in' onclick='toggleExpand(this)'><h3>Web Project</h3><div class='card-content'><p>Build a modern student hub web app with animations and dark mode.</p></div></div>
+      <div class='card fade-in' onclick='toggleExpand(this)'><h3>IPR Session</h3><div class='card-content'><p>Learn about Intellectual Property Rights and its impact in innovation.</p></div></div>
     `;
-  } else if (tab === "todo") {
-    content.innerHTML = `
+  }else if(tab==="todo"){
+    content.innerHTML=`
       <h2>To-Do List</h2>
       <input type='text' id='todoInput' placeholder='Add a new task...' />
       <button class='primary' onclick='addTodo()'>Add Task</button>
       <div id='todoList'></div>
     `;
     loadTodos();
-  } else if (tab === "chat") {
-    content.innerHTML = `
+  }else if(tab==="chat"){
+    content.innerHTML=`
       <h2>AI Chat Assistant</h2>
       <div id='chatBox' style='max-height:400px;overflow-y:auto;padding:10px;border-radius:12px;background:var(--card-bg);backdrop-filter:blur(6px);box-shadow:0 0 8px var(--shadow);margin-bottom:10px;'>
         <div class='fade-in'><strong>AI:</strong> Hi! I’m your study assistant 🤖. How can I help you today?</div>
@@ -319,8 +306,8 @@ function renderTab(tab) {
         <button class='primary' onclick='sendMessage()'>Send</button>
       </div>
     `;
-  } else if (tab === "social") {
-    content.innerHTML = `
+  }else if(tab==="social"){
+    content.innerHTML=`
       <h2>Social Feed</h2>
       <div class='card fade-in'><strong>Ravi:</strong> Finished my Python app! 🔥</div>
       <div class='card fade-in'><strong>Meena:</strong> Excited for tech fest 🎉</div>
@@ -328,103 +315,52 @@ function renderTab(tab) {
   }
   lucide.createIcons();
 }
-function toggleExpand(card){ card.classList.toggle("expanded"); }
+function toggleExpand(card){card.classList.toggle("expanded");}
 
-/* --- TODO LIST --- */
-let todos = [];
-function loadTodos(){
-  const saved = localStorage.getItem("todos");
-  todos = saved ? JSON.parse(saved) : [];
-  renderTodos();
-}
-function saveTodos(){ localStorage.setItem("todos", JSON.stringify(todos)); }
-function addTodo(){
-  const input = document.getElementById("todoInput");
-  const text = input.value.trim();
-  if(!text) return;
-  todos.push({id: Date.now(), text, completed: false});
-  saveTodos(); renderTodos(); input.value="";
-}
-function toggleTodo(id){
-  const todo = todos.find(t=>t.id===id);
-  todo.completed = !todo.completed;
-  saveTodos(); renderTodos();
-}
-function deleteTodo(id){
-  const el=document.querySelector(`[data-id='${id}']`);
-  el.classList.add("slide-out");
-  setTimeout(()=>{
-    todos=todos.filter(t=>t.id!==id);
-    saveTodos(); renderTodos();
-  },350);
-}
-function renderTodos(){
-  const list=document.getElementById("todoList");
-  if(!list) return;
-  list.innerHTML="";
-  todos.forEach(t=>{
-    const div=document.createElement("div");
-    div.className=`card todo-item fade-in ${t.completed?"completed":""}`;
-    div.dataset.id=t.id;
-    div.innerHTML=`
-      <div class='todo-text'>${t.text}</div>
-      <div class='todo-buttons'>
-        <button class='primary' style='background:${t.completed?"orange":"limegreen"};' onclick='toggleTodo(${t.id})'>
-          <i data-lucide='${t.completed?"rotate-ccw":"check"}'></i>
-        </button>
-        <button class='primary' style='background:red;' onclick='deleteTodo(${t.id})'>
-          <i data-lucide='trash-2'></i>
-        </button>
-      </div>`;
-    list.appendChild(div);
-  });
-  lucide.createIcons();
-}
+/* --- TODO --- */
+let todos=[];
+function loadTodos(){const saved=localStorage.getItem("todos");todos=saved?JSON.parse(saved):[];renderTodos();}
+function saveTodos(){localStorage.setItem("todos",JSON.stringify(todos));}
+function addTodo(){const input=document.getElementById("todoInput");const text=input.value.trim();if(!text)return;todos.push({id:Date.now(),text,completed:false});saveTodos();renderTodos();input.value="";}
+function toggleTodo(id){const todo=todos.find(t=>t.id===id);todo.completed=!todo.completed;saveTodos();renderTodos();}
+function deleteTodo(id){const el=document.querySelector(`[data-id='${id}']`);el.classList.add("slide-out");setTimeout(()=>{todos=todos.filter(t=>t.id!==id);saveTodos();renderTodos();},350);}
+function renderTodos(){const list=document.getElementById("todoList");if(!list)return;list.innerHTML="";todos.forEach(t=>{const div=document.createElement("div");div.className=`card todo-item fade-in ${t.completed?"completed":""}`;div.dataset.id=t.id;div.innerHTML=`<div class='todo-text'>${t.text}</div><div class='todo-buttons'><button class='primary' style='background:${t.completed?"orange":"limegreen"};' onclick='toggleTodo(${t.id})'><i data-lucide='${t.completed?"rotate-ccw":"check"}'></i></button><button class='primary' style='background:red;' onclick='deleteTodo(${t.id})'><i data-lucide='trash-2'></i></button></div>`;list.appendChild(div);});lucide.createIcons();}
 
-/* --- GEMINI READY CHAT (Animated) --- */
+/* --- GEMINI CHAT --- */
 async function sendMessage(){
   const input=document.getElementById("chatInput");
   const chatBox=document.getElementById("chatBox");
   const userMsg=input.value.trim();
-  if(!userMsg) return;
+  if(!userMsg)return;
 
-  // Display user message
   const userDiv=document.createElement("div");
   userDiv.className="fade-in";
   userDiv.innerHTML=`<strong>You:</strong> ${userMsg}`;
   chatBox.appendChild(userDiv);
 
-  // Typing indicator
   const typingDiv=document.createElement("div");
   typingDiv.className="fade-in";
   typingDiv.innerHTML=`<strong>AI:</strong> <span class="typing">...</span>`;
   chatBox.appendChild(typingDiv);
   chatBox.scrollTop=chatBox.scrollHeight;
 
-  // ✅ Replace with your Gemini API key
-  const GEMINI_API_KEY = "AIzaSyDDo2mP0qVzdCuNFnJhklwxa-UeRnGPY_8";
-  let replyText = "Hmm... I couldn’t fetch a response.";
+  const GEMINI_API_KEY="PASTE_YOUR_GEMINI_API_KEY_HERE";
+  let replyText="Hmm... I couldn’t fetch a response.";
 
-  try {
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY,
-      {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          contents: [{role: "user", parts: [{text: userMsg}]}]
-        })
-      }
-    );
-    const data = await response.json();
-    replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn’t generate a reply right now.";
-  } catch (err) {
-    replyText = "⚠️ Error connecting to Gemini API.";
+  try{
+    const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="+GEMINI_API_KEY,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({contents:[{role:"user",parts:[{text:userMsg}]}]})
+    });
+    const data=await response.json();
+    replyText=data?.candidates?.[0]?.content?.parts?.[0]?.text||"I couldn’t generate a reply right now.";
+  }catch(err){
+    replyText="⚠️ Error connecting to Gemini API.";
     console.error(err);
   }
 
-  // Remove typing animation and show reply
-  typingDiv.innerHTML=`<strong>AI:</strong> <span class="fade-in">${replyText}</span>`;
+  typingDiv.innerHTML=`<strong>AI:</strong> <span class='fade-in'>${replyText}</span>`;
   chatBox.scrollTop=chatBox.scrollHeight;
   input.value="";
 }
@@ -433,6 +369,7 @@ async function sendMessage(){
 window.addEventListener("DOMContentLoaded",()=>{
   lucide.createIcons();
   setActiveTab("todo");
+  setTimeout(()=>{const splash=document.getElementById("splash");if(splash)splash.style.display="none";},4000);
 });
 </script>
 </body>
