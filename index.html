@@ -31,6 +31,7 @@ body {
   color: var(--text-color);
   transition: background-color 0.4s, color 0.4s;
   overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ======================= SPLASH SCREEN ======================= */
@@ -69,12 +70,6 @@ body {
   opacity: 0;
 }
 
-/* Mobile optimization */
-@media (max-height: 600px) {
-  #splash-logo { font-size: 1.6rem; }
-  #splash-subtitle { font-size: 0.8rem; }
-}
-
 @keyframes popIn {
   0% { transform: scale(0.7); opacity: 0; }
   60% { transform: scale(1.1); opacity: 1; }
@@ -96,7 +91,7 @@ header {
   background: var(--gradient);
   color: white;
   padding: 0;
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: 600;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -113,60 +108,70 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 20px;
+  padding: 12px 16px;
   position: relative;
 }
 
 .header-title {
   text-align: center;
   flex: 1;
+  font-size: 1.2rem;
 }
 
+/* Simplified Menu Toggle */
 .menu-toggle {
   position: absolute;
-  left: 20px;
-  background: rgba(255,255,255,0.2);
+  left: 16px;
+  background: none;
   border: none;
-  border-radius: 50%;
   color: white;
   cursor: pointer;
   padding: 8px;
-  backdrop-filter: blur(10px);
   transition: 0.3s;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.menu-toggle:hover { transform: rotate(20deg); }
+.menu-toggle:hover { opacity: 0.8; }
 
 .dark-mode-toggle {
   position: absolute;
-  right: 20px;
+  right: 16px;
   background: rgba(255,255,255,0.2);
   border: none;
   border-radius: 50%;
   color: white;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   backdrop-filter: blur(10px);
   transition: 0.3s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .dark-mode-toggle:hover { transform: rotate(20deg); }
 
 /* Integrated News Ticker */
 .news-ticker {
   background: rgba(0, 0, 0, 0.15);
-  padding: 8px 20px;
+  padding: 6px 16px;
   overflow: hidden;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .news-icon {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
@@ -177,7 +182,7 @@ header {
 }
 
 .news-ticker-content span {
-  margin-right: 40px;
+  margin-right: 30px;
 }
 
 @keyframes ticker {
@@ -258,8 +263,8 @@ header {
 }
 
 .content {
-  padding: 20px;
-  padding-bottom: 90px;
+  padding: 16px;
+  padding-bottom: 80px;
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 1s ease forwards 2.8s;
@@ -269,13 +274,13 @@ header {
 .card {
   background: var(--card-bg);
   border-radius: 16px;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 12px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 10px var(--shadow);
   backdrop-filter: blur(8px);
   transition: transform 0.25s ease, background 0.4s, max-height 0.4s ease;
   overflow: hidden;
-  max-height: 90px;
+  max-height: 80px;
   cursor: pointer;
 }
 .card:hover { transform: scale(1.02); }
@@ -290,12 +295,12 @@ header {
   background: var(--accent);
   color: white;
   border: none;
-  padding: 12px 20px;
+  padding: 10px 16px;
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
   position: relative;
@@ -314,7 +319,7 @@ header {
 }
 
 .back-button:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
 }
 
@@ -328,7 +333,7 @@ header {
 }
 
 .back-button i {
-  margin-right: 10px;
+  margin-right: 8px;
   transition: transform 0.3s ease;
 }
 
@@ -336,21 +341,27 @@ header {
   transform: translateX(-3px);
 }
 
-/* Updated Schedule Table */
-.schedule-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Mobile Optimized Schedule Table */
+.schedule-container {
+  overflow-x: auto;
   margin-top: 15px;
   border-radius: 12px;
-  overflow: hidden;
   box-shadow: 0 4px 10px var(--shadow);
-  font-size: 0.85rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.schedule-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 0.75rem;
 }
 
 .schedule-table th, .schedule-table td {
-  padding: 10px 8px;
+  padding: 8px 6px;
   text-align: left;
   border-bottom: 1px solid rgba(0,0,0,0.1);
+  white-space: nowrap;
 }
 
 .schedule-table th {
@@ -358,6 +369,8 @@ header {
   color: white;
   font-weight: 600;
   text-align: center;
+  position: sticky;
+  left: 0;
 }
 
 .schedule-table tr:nth-child(even) {
@@ -380,7 +393,7 @@ header {
 /* Events Page */
 .event-card {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 10px var(--shadow);
@@ -389,82 +402,85 @@ header {
 }
 
 .event-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
 }
 
 .event-date {
   background: var(--accent);
   color: white;
-  padding: 15px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
+  min-width: 70px;
 }
 
 .event-date .day {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
 .event-date .month {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.9;
 }
 
 .event-details {
-  padding: 15px;
+  padding: 12px;
   flex: 1;
 }
 
 .event-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  line-height: 1.2;
 }
 
 .event-time {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.8;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .event-description {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.7;
+  line-height: 1.3;
 }
 
 /* About Page */
 .about-section {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .about-section h3 {
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   border-bottom: 2px solid var(--accent);
-  padding-bottom: 5px;
+  padding-bottom: 4px;
+  font-size: 1.1rem;
 }
 
 .dev-card {
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 12px;
   background: var(--card-bg);
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 10px var(--shadow);
   transition: transform 0.3s ease;
 }
 
 .dev-card:hover {
-  transform: translateX(5px);
+  transform: translateX(3px);
 }
 
 .dev-avatar {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: var(--gradient);
   display: flex;
@@ -472,62 +488,56 @@ header {
   justify-content: center;
   color: white;
   font-weight: 700;
-  font-size: 1.2rem;
-  margin-right: 15px;
+  font-size: 1rem;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .dev-info h4 {
-  margin: 0 0 5px 0;
-  font-size: 1.1rem;
+  margin: 0 0 4px 0;
+  font-size: 1rem;
 }
 
 .dev-info p {
   margin: 0;
   opacity: 0.8;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 /* News Card Styles */
 .news-card {
   max-height: none;
   cursor: default;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .news-card:hover {
-  transform: translateY(-5px);
-}
-
-.news-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 10px;
+  transform: translateY(-3px);
 }
 
 .news-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 8px;
-  line-height: 1.3;
+  margin-bottom: 6px;
+  line-height: 1.2;
 }
 
 .news-description {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.8;
-  line-height: 1.4;
-  margin-bottom: 10px;
+  line-height: 1.3;
+  margin-bottom: 8px;
 }
 
 .news-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   opacity: 0.7;
 }
 
+/* Mobile Optimized Navigation */
 nav {
   position: fixed;
   bottom: 0;
@@ -539,37 +549,52 @@ nav {
   padding: 8px 0;
   backdrop-filter: blur(10px);
   z-index: 10;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
 nav button {
   background: none;
   border: none;
   color: var(--text-color);
-  font-size: 1.1em;
+  font-size: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   flex: 1;
-  padding: 8px 0;
+  padding: 6px 0;
+  position: relative;
 }
-nav button.active { color: var(--accent); transform: translateY(-3px); }
+nav button.active { 
+  color: var(--accent); 
+  transform: translateY(-6px);
+}
+nav button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+}
 nav button span {
-  font-size: 0.7rem;
-  margin-top: 4px;
+  font-size: 0.65rem;
+  margin-top: 2px;
 }
 
 input, textarea {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 12px;
   border: 1px solid #ccc;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   background-color: var(--card-bg);
   color: var(--text-color);
   backdrop-filter: blur(6px);
-  font-size: 1em;
+  font-size: 0.9em;
   transition: 0.3s;
+  box-sizing: border-box;
 }
 input:focus {
   outline: none;
@@ -581,10 +606,10 @@ button.primary {
   background-color: var(--accent);
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 0.95em;
+  font-size: 0.9em;
   transition: 0.3s ease;
 }
 button.primary:hover {
@@ -598,9 +623,9 @@ button.primary:hover {
   align-items: center;
   transition: all 0.3s ease;
 }
-.todo-text { flex: 1; margin-left: 10px; word-break: break-word; transition: 0.3s; }
+.todo-text { flex: 1; margin-left: 8px; word-break: break-word; transition: 0.3s; font-size: 0.9rem; }
 .todo-item.completed .todo-text { text-decoration: line-through; opacity: 0.6; }
-.todo-buttons { display: flex; gap: 6px; }
+.todo-buttons { display: flex; gap: 4px; }
 
 .fade-in { animation: fadeIn 0.5s ease; }
 @keyframes fadeIn {
@@ -627,15 +652,15 @@ button.primary:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
 }
 
 .loading-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background-color: var(--accent);
-  margin: 0 4px;
+  margin: 0 3px;
   animation: loading 1.4s ease-in-out infinite both;
 }
 
@@ -667,15 +692,46 @@ button.primary:hover {
   100% { opacity: 1; transform: translateX(0); }
 }
 
-/* Responsive adjustments for schedule */
-@media (max-width: 768px) {
-  .schedule-table {
-    font-size: 0.75rem;
+/* Mobile-first responsive design */
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.1rem;
   }
   
-  .schedule-table th, .schedule-table td {
-    padding: 8px 5px;
+  .content {
+    padding: 12px;
+    padding-bottom: 70px;
   }
+  
+  .card {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  nav button span {
+    font-size: 0.6rem;
+  }
+  
+  .event-date {
+    min-width: 60px;
+    padding: 10px;
+  }
+  
+  .event-date .day {
+    font-size: 1.1rem;
+  }
+  
+  .dev-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 </style>
 </head>
@@ -826,8 +882,8 @@ function renderEventsPage() {
       </div>
       <div class="event-details">
         <div class="event-title">PSNA TECKNOWFEST'2025</div>
-        <div class="event-time">9:00 AM - 5:00 PM | Main Auditorium| Reg fee: 200 </div>
-        <div class="event-description">paper presentation, decodex, web innovate,ideathaon,code quest arena, talentra,</div>
+        <div class="event-time">9:00 AM - 5:00 PM | Main Auditorium | Reg fee: 200</div>
+        <div class="event-description">Paper presentation, decodex, web innovate, ideathon, code quest arena, talentra</div>
       </div>
     </div>
     <div class="event-card">
@@ -852,17 +908,6 @@ function renderEventsPage() {
         <div class="event-description">An evening of music, dance, and performances by talented students.</div>
       </div>
     </div>
-    <div class="event-card">
-      <div class="event-date">
-        <div class="day">12</div>
-        <div class="month">NOV</div>
-      </div>
-      <div class="event-details">
-        <div class="event-title">Sports Tournament</div>
-        <div class="event-time">All Day | Sports Ground</div>
-        <div class="event-description">Inter-department sports competition with basketball, football, and cricket.</div>
-      </div>
-    </div>
   `;
   lucide.createIcons();
 }
@@ -875,92 +920,94 @@ function renderSchedulePage() {
       Back to Main
     </button>
     <h2>Class Schedule</h2>
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-          <th>Saturday</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>9:00-9:50</td>
-          <td class="day-monday">Data Structures</td>
-          <td class="day-tuesday">Web Development</td>
-          <td class="day-wednesday">Algorithms</td>
-          <td class="day-thursday">Database Systems</td>
-          <td class="day-friday">Operating Systems</td>
-          <td class="day-saturday">Project Lab</td>
-        </tr>
-        <tr>
-          <td>9:51-10:35</td>
-          <td class="day-monday">Mathematics</td>
-          <td class="day-tuesday">Data Structures</td>
-          <td class="day-wednesday">Web Development</td>
-          <td class="day-thursday">Algorithms</td>
-          <td class="day-friday">Database Systems</td>
-          <td class="day-saturday">Project Lab</td>
-        </tr>
-        <tr class="break-row">
-          <td>10:36-11:00</td>
-          <td colspan="6" style="text-align: center; font-weight: 600;">BREAK</td>
-        </tr>
-        <tr>
-          <td>11:01-11:45</td>
-          <td class="day-monday">Operating Systems</td>
-          <td class="day-tuesday">Mathematics</td>
-          <td class="day-wednesday">Data Structures</td>
-          <td class="day-thursday">Web Development</td>
-          <td class="day-friday">Algorithms</td>
-          <td class="day-saturday">Library</td>
-        </tr>
-        <tr>
-          <td>11:46-12:30</td>
-          <td class="day-monday">Software Engineering</td>
-          <td class="day-tuesday">Computer Networks</td>
-          <td class="day-wednesday">AI & ML</td>
-          <td class="day-thursday">Cyber Security</td>
-          <td class="day-friday">Cloud Computing</td>
-          <td class="day-saturday">Tutorial</td>
-        </tr>
-        <tr class="break-row">
-          <td>12:31-1:15</td>
-          <td colspan="6" style="text-align: center; font-weight: 600;">LUNCH BREAK</td>
-        </tr>
-        <tr>
-          <td>1:16-2:00</td>
-          <td class="day-monday">Computer Networks</td>
-          <td class="day-tuesday">Software Engineering</td>
-          <td class="day-wednesday">Cyber Security</td>
-          <td class="day-thursday">AI & ML</td>
-          <td class="day-friday">Cloud Computing</td>
-          <td class="day-saturday">Lab Session</td>
-        </tr>
-        <tr>
-          <td>2:01-2:45</td>
-          <td class="day-monday">AI & ML</td>
-          <td class="day-tuesday">Cloud Computing</td>
-          <td class="day-wednesday">Software Engineering</td>
-          <td class="day-thursday">Computer Networks</td>
-          <td class="day-friday">Cyber Security</td>
-          <td class="day-saturday">Lab Session</td>
-        </tr>
-        <tr>
-          <td>2:46-3:30</td>
-          <td class="day-monday">Cyber Security</td>
-          <td class="day-tuesday">AI & ML</td>
-          <td class="day-wednesday">Cloud Computing</td>
-          <td class="day-thursday">Software Engineering</td>
-          <td class="day-friday">Computer Networks</td>
-          <td class="day-saturday">Self Study</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="schedule-container">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>9:00-9:50</td>
+            <td class="day-monday">Data Structures</td>
+            <td class="day-tuesday">Web Development</td>
+            <td class="day-wednesday">Algorithms</td>
+            <td class="day-thursday">Database Systems</td>
+            <td class="day-friday">Operating Systems</td>
+            <td class="day-saturday">Project Lab</td>
+          </tr>
+          <tr>
+            <td>9:51-10:35</td>
+            <td class="day-monday">Mathematics</td>
+            <td class="day-tuesday">Data Structures</td>
+            <td class="day-wednesday">Web Development</td>
+            <td class="day-thursday">Algorithms</td>
+            <td class="day-friday">Database Systems</td>
+            <td class="day-saturday">Project Lab</td>
+          </tr>
+          <tr class="break-row">
+            <td>10:36-11:00</td>
+            <td colspan="6" style="text-align: center; font-weight: 600;">BREAK</td>
+          </tr>
+          <tr>
+            <td>11:01-11:45</td>
+            <td class="day-monday">Operating Systems</td>
+            <td class="day-tuesday">Mathematics</td>
+            <td class="day-wednesday">Data Structures</td>
+            <td class="day-thursday">Web Development</td>
+            <td class="day-friday">Algorithms</td>
+            <td class="day-saturday">Library</td>
+          </tr>
+          <tr>
+            <td>11:46-12:30</td>
+            <td class="day-monday">Software Engineering</td>
+            <td class="day-tuesday">Computer Networks</td>
+            <td class="day-wednesday">AI & ML</td>
+            <td class="day-thursday">Cyber Security</td>
+            <td class="day-friday">Cloud Computing</td>
+            <td class="day-saturday">Tutorial</td>
+          </tr>
+          <tr class="break-row">
+            <td>12:31-1:15</td>
+            <td colspan="6" style="text-align: center; font-weight: 600;">LUNCH BREAK</td>
+          </tr>
+          <tr>
+            <td>1:16-2:00</td>
+            <td class="day-monday">Computer Networks</td>
+            <td class="day-tuesday">Software Engineering</td>
+            <td class="day-wednesday">Cyber Security</td>
+            <td class="day-thursday">AI & ML</td>
+            <td class="day-friday">Cloud Computing</td>
+            <td class="day-saturday">Lab Session</td>
+          </tr>
+          <tr>
+            <td>2:01-2:45</td>
+            <td class="day-monday">AI & ML</td>
+            <td class="day-tuesday">Cloud Computing</td>
+            <td class="day-wednesday">Software Engineering</td>
+            <td class="day-thursday">Computer Networks</td>
+            <td class="day-friday">Cyber Security</td>
+            <td class="day-saturday">Lab Session</td>
+          </tr>
+          <tr>
+            <td>2:46-3:30</td>
+            <td class="day-monday">Cyber Security</td>
+            <td class="day-tuesday">AI & ML</td>
+            <td class="day-wednesday">Cloud Computing</td>
+            <td class="day-thursday">Software Engineering</td>
+            <td class="day-friday">Computer Networks</td>
+            <td class="day-saturday">Self Study</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   `;
   lucide.createIcons();
 }
@@ -982,24 +1029,24 @@ function renderAboutPage() {
     <div class="about-section">
       <h3>Development Team</h3>
       <div class="dev-card">
-        <div class="dev-avatar">AJ</div>
+        <div class="dev-avatar">K</div>
         <div class="dev-info">
-          <h4>Alex Johnson</h4>
+          <h4>Karthikeyan</h4>
           <p>Lead Developer & UI/UX Designer</p>
         </div>
       </div>
       <div class="dev-card">
-        <div class="dev-avatar">SM</div>
+        <div class="dev-avatar">P</div>
         <div class="dev-info">
-          <h4>Sarah Miller</h4>
-          <p>Backend Developer & Database Architect</p>
+          <h4>Praveenraj</h4>
+          <p>Lead Developer & Animation Specialist</p>
         </div>
       </div>
       <div class="dev-card">
-        <div class="dev-avatar">MR</div>
+        <div class="dev-avatar">S</div>
         <div class="dev-info">
-          <h4>Mike Rodriguez</h4>
-          <p>Frontend Developer & Animation Specialist</p>
+          <h4>Sriram</h4>
+          <p>Technical Support Contributor</p>
         </div>
       </div>
     </div>
@@ -1065,11 +1112,11 @@ function renderTab(tab){
   }else if(tab==="chat"){
     content.innerHTML=`
       <h2>AI Chat Assistant</h2>
-      <div id='chatBox' style='max-height:400px;overflow-y:auto;padding:10px;border-radius:12px;background:var(--card-bg);backdrop-filter:blur(6px);box-shadow:0 0 8px var(--shadow);margin-bottom:10px;'>
+      <div id='chatBox' style='max-height:300px;overflow-y:auto;padding:10px;border-radius:12px;background:var(--card-bg);backdrop-filter:blur(6px);box-shadow:0 0 8px var(--shadow);margin-bottom:10px;'>
         <div class='fade-in'><strong>AI:</strong> Hi! I'm your study assistant 🤖. How can I help you today?</div>
       </div>
       <div style='display:flex;gap:6px;'>
-        <textarea id='chatInput' placeholder='Ask something...' style='flex:1;resize:none;height:50px;'></textarea>
+        <textarea id='chatInput' placeholder='Ask something...' style='flex:1;resize:none;height:50px;font-size:0.9rem;'></textarea>
         <button class='primary' onclick='sendMessage()'>Send</button>
       </div>
     `;
@@ -1092,7 +1139,7 @@ function saveTodos(){localStorage.setItem("todos",JSON.stringify(todos));}
 function addTodo(){const input=document.getElementById("todoInput");const text=input.value.trim();if(!text)return;todos.push({id:Date.now(),text,completed:false});saveTodos();renderTodos();input.value="";}
 function toggleTodo(id){const todo=todos.find(t=>t.id===id);todo.completed=!todo.completed;saveTodos();renderTodos();}
 function deleteTodo(id){const el=document.querySelector(`[data-id='${id}']`);el.classList.add("slide-out");setTimeout(()=>{todos=todos.filter(t=>t.id!==id);saveTodos();renderTodos();},350);}
-function renderTodos(){const list=document.getElementById("todoList");if(!list)return;list.innerHTML="";todos.forEach(t=>{const div=document.createElement("div");div.className=`card todo-item fade-in ${t.completed?"completed":""}`;div.dataset.id=t.id;div.innerHTML=`<div class='todo-text'>${t.text}</div><div class='todo-buttons'><button class='primary' style='background:${t.completed?"orange":"limegreen"};' onclick='toggleTodo(${t.id})'><i data-lucide='${t.completed?"rotate-ccw":"check"}'></i></button><button class='primary' style='background:red;' onclick='deleteTodo(${t.id})'><i data-lucide='trash-2'></i></button></div>`;list.appendChild(div);});lucide.createIcons();}
+function renderTodos(){const list=document.getElementById("todoList");if(!list)return;list.innerHTML="";todos.forEach(t=>{const div=document.createElement("div");div.className=`card todo-item fade-in ${t.completed?"completed":""}`;div.dataset.id=t.id;div.innerHTML=`<div class='todo-text'>${t.text}</div><div class='todo-buttons'><button class='primary' style='background:${t.completed?"orange":"limegreen"};padding:6px 8px;' onclick='toggleTodo(${t.id})'><i data-lucide='${t.completed?"rotate-ccw":"check"}'></i></button><button class='primary' style='background:red;padding:6px 8px;' onclick='deleteTodo(${t.id})'><i data-lucide='trash-2'></i></button></div>`;list.appendChild(div);});lucide.createIcons();}
 
 /* --- NEWS --- */
 // Manual daily news updates
@@ -1122,7 +1169,7 @@ async function loadNews() {
   
   // First show manual news
   let newsHTML = `
-    <h3 style="margin-top: 20px;">Campus Updates</h3>
+    <h3 style="margin-top: 16px; font-size: 1.1rem;">Campus Updates</h3>
   `;
   
   manualNews.forEach(news => {
@@ -1140,7 +1187,7 @@ async function loadNews() {
   
   // Add external news section
   newsHTML += `
-    <h3 style="margin-top: 20px;">Education News</h3>
+    <h3 style="margin-top: 16px; font-size: 1.1rem;">Education News</h3>
     <div id="externalNews"></div>
   `;
   
@@ -1155,7 +1202,6 @@ async function loadExternalNews() {
   
   try {
     // For demo purposes, we'll use mock data
-    // In a real implementation, you would fetch from an API
     const mockNews = [
       {
         title: "New Study Shows Benefits of Digital Learning",
@@ -1168,12 +1214,6 @@ async function loadExternalNews() {
         description: "Leading institutions are implementing AI systems to create customized learning paths for students.",
         source: "Tech Education Review",
         publishedAt: "2023-10-12"
-      },
-      {
-        title: "Government Increases Education Budget",
-        description: "The federal government has announced a 15% increase in education funding for the next fiscal year.",
-        source: "National News",
-        publishedAt: "2023-10-10"
       }
     ];
     
