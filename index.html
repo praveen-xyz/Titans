@@ -537,6 +537,19 @@ header {
   opacity: 0.7;
 }
 
+.news-link {
+  color: var(--accent);
+  font-size: 0.7rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
 /* Mobile Optimized Navigation */
 nav {
   position: fixed;
@@ -733,6 +746,480 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+/* ======================= AI CHAT STYLES ======================= */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  max-height: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--shadow);
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+}
+
+.chat-header {
+  background: var(--gradient);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chat-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-message {
+  align-self: flex-end;
+  background: var(--accent);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-message {
+  align-self: flex-start;
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-bottom-left-radius: 4px;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.chat-input-container {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  background: var(--card-bg);
+}
+
+.chat-input {
+  flex: 1;
+  border-radius: 24px;
+  padding: 10px 16px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  resize: none;
+  max-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.send-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.send-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.send-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 12px 12px;
+  background: var(--card-bg);
+}
+
+.suggestion-chip {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.suggestion-chip:hover {
+  background: rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.chat-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.clear-chat-button {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.clear-chat-button:hover {
+  background: rgba(255, 0, 0, 0.1);
+  color: #ff4444;
+}
+
+/* API Key Input */
+.api-key-container {
+  margin-bottom: 16px;
+}
+
+.api-key-input {
+  display: flex;
+  gap: 8px;
+}
+
+.api-key-input input {
+  flex: 1;
+}
+
+.api-key-status {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.api-key-status.valid {
+  color: #06d6a0;
+}
+
+.api-key-status.invalid {
+  color: #ff6b6b;
+}
+
+/* Chat History */
+.chat-history {
+  margin-top: 16px;
+}
+
+.chat-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-history-item:hover {
+  background: rgba(0, 123, 255, 0.1);
+  transform: translateX(3px);
+}
+
+.chat-history-preview {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.chat-history-date {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments for chat */
+@media (max-width: 480px) {
+  .chat-container {
+    height: calc(100vh - 180px);
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .chat-suggestions {
+    padding: 0 8px 8px;
+  }
+  
+  .suggestion-chip {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+}
+
+/* ======================= FACULTY STYLES ======================= */
+.staff-section {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.staff-section h3 {
+  color: var(--accent);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.staff-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 10px var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 4px solid var(--accent);
+  animation: staffCardAppear 0.6s ease-out both;
+  transform-origin: center bottom;
+}
+
+.staff-card:nth-child(1) { animation-delay: 0.1s; }
+.staff-card:nth-child(2) { animation-delay: 0.2s; }
+.staff-card:nth-child(3) { animation-delay: 0.3s; }
+.staff-card:nth-child(4) { animation-delay: 0.4s; }
+.staff-card:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes staffCardAppear {
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+.staff-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+.staff-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.staff-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.staff-info {
+  flex: 1;
+}
+
+.staff-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: var(--text-color);
+}
+
+.staff-role {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.staff-experience {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.experience-badge {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--accent);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.staff-department {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.staff-contact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* iOS-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+  .staff-card {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .staff-card:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .staff-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .staff-card {
+    padding: 14px;
+  }
+  
+  .staff-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -755,6 +1242,10 @@ html, body {
   <a href="#" class="menu-item" onclick="showPage('schedule')">
     <i data-lucide="clock"></i>
     <span>Schedule</span>
+  </a>
+  <a href="#" class="menu-item" onclick="showPage('faculty')">
+    <i data-lucide="users"></i>
+    <span>Faculty</span>
   </a>
   <a href="#" class="menu-item" onclick="showPage('about')">
     <i data-lucide="info"></i>
@@ -779,10 +1270,10 @@ html, body {
       <span></span>
     </div>
     <div class="news-ticker-content">
-      <span>🚀 Welcome to Titans Student Hub! New features added today.</span>
-      <span>📚 Mid-term exams starting next week - Check your schedule!</span>
-      <span>🎉 Tech Fest 2023 registration now open!</span>
-      <span>📢 Student council elections next month</span>
+      <span>🚀 Welcome to Titans Student Hub! </span>
+      <span>📚 Ready to be your perfect study partner!</span>
+      <span>🎉 New featurres are comming soon...</span>
+      <span>📢 Everything you need is in one app</span>
     </div>
   </div>
 </header>
@@ -798,6 +1289,10 @@ html, body {
 </nav>
 
 <script>
+/* --- API KEYS --- */
+const GEMINI_API_KEY = "AIzaSyDMYFcYpFanzTQXj7P-l1uM_KQz5xjom_c";
+const NEWS_API_KEY = "9c49d1a283064489a77a0a2fc89e3db6";
+
 /* --- DARK MODE --- */
 const toggle=document.getElementById("darkToggle");
 if(localStorage.getItem("darkMode")==="true")document.body.classList.add("dark");
@@ -857,6 +1352,8 @@ function showPage(page) {
     renderEventsPage();
   } else if (page === "schedule") {
     renderSchedulePage();
+  } else if (page === "faculty") {
+    renderFacultyPage();
   } else if (page === "about") {
     renderAboutPage();
   }
@@ -930,27 +1427,27 @@ function renderSchedulePage() {
             <th>Wednesday</th>
             <th>Thursday</th>
             <th>Friday</th>
-            <th>Saturday</th>
+            
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>9:00-9:50</td>
-            <td class="day-monday">Data Structures</td>
-            <td class="day-tuesday">Web Development</td>
-            <td class="day-wednesday">Algorithms</td>
-            <td class="day-thursday">Database Systems</td>
-            <td class="day-friday">Operating Systems</td>
-            <td class="day-saturday">Project Lab</td>
+            <td class="day-monday">discrete mathametics</td>
+            <td class="day-tuesday">foundation of dada science</td>
+            <td class="day-wednesday">digital principle and computer organization</td>
+            <td class="day-thursday">data structure and algoritham using python</td>
+            <td class="day-friday">object orianted programing using java</td>
+            
           </tr>
           <tr>
             <td>9:51-10:35</td>
-            <td class="day-monday">Mathematics</td>
-            <td class="day-tuesday">Data Structures</td>
-            <td class="day-wednesday">Web Development</td>
-            <td class="day-thursday">Algorithms</td>
-            <td class="day-friday">Database Systems</td>
-            <td class="day-saturday">Project Lab</td>
+            <td class="day-monday">data structure and algoritham using python</td>
+            <td class="day-tuesday">digital principle and computer organization</td>
+            <td class="day-wednesday">object orianted programing using java</td>
+            <td class="day-thursday">foundation of dada science</td>
+            <td class="day-friday">discrete mathametics</td>
+           
           </tr>
           <tr class="break-row">
             <td>10:36-11:00</td>
@@ -958,21 +1455,21 @@ function renderSchedulePage() {
           </tr>
           <tr>
             <td>11:01-11:45</td>
-            <td class="day-monday">Operating Systems</td>
-            <td class="day-tuesday">Mathematics</td>
-            <td class="day-wednesday">Data Structures</td>
-            <td class="day-thursday">Web Development</td>
-            <td class="day-friday">Algorithms</td>
-            <td class="day-saturday">Library</td>
+            <td class="day-monday">discrete mathametics</td>
+            <td class="day-tuesday">discrete mathametics<</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">digital principle and computer organization</td>
+            <td class="day-friday">foundation of dada science</td>
+           
           </tr>
           <tr>
             <td>11:46-12:30</td>
-            <td class="day-monday">Software Engineering</td>
-            <td class="day-tuesday">Computer Networks</td>
-            <td class="day-wednesday">AI & ML</td>
-            <td class="day-thursday">Cyber Security</td>
-            <td class="day-friday">Cloud Computing</td>
-            <td class="day-saturday">Tutorial</td>
+            <td class="day-monday">digital principle and computer organization</td>
+            <td class="day-tuesday">object orianted programing using java</td>
+            <td class="day-wednesday">data structure and algoritham using python</td>
+            <td class="day-thursday">digital principle and computer organization</td>
+            <td class="day-friday">foundation of dada science</td>
+            
           </tr>
           <tr class="break-row">
             <td>12:31-1:15</td>
@@ -980,33 +1477,162 @@ function renderSchedulePage() {
           </tr>
           <tr>
             <td>1:16-2:00</td>
-            <td class="day-monday">Computer Networks</td>
-            <td class="day-tuesday">Software Engineering</td>
-            <td class="day-wednesday">Cyber Security</td>
-            <td class="day-thursday">AI & ML</td>
-            <td class="day-friday">Cloud Computing</td>
-            <td class="day-saturday">Lab Session</td>
+            <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">library</td>
+            <td class="day-friday">core training</td>
           </tr>
           <tr>
             <td>2:01-2:45</td>
-            <td class="day-monday">AI & ML</td>
-            <td class="day-tuesday">Cloud Computing</td>
-            <td class="day-wednesday">Software Engineering</td>
-            <td class="day-thursday">Computer Networks</td>
-            <td class="day-friday">Cyber Security</td>
-            <td class="day-saturday">Lab Session</td>
+           <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">discrete mathametics</td>
+            <td class="day-friday">discrete mathametics</td>
           </tr>
           <tr>
             <td>2:46-3:30</td>
-            <td class="day-monday">Cyber Security</td>
-            <td class="day-tuesday">AI & ML</td>
-            <td class="day-wednesday">Cloud Computing</td>
-            <td class="day-thursday">Software Engineering</td>
-            <td class="day-friday">Computer Networks</td>
-            <td class="day-saturday">Self Study</td>
+            <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">object orianted programing using java</td>
+            <td class="day-friday">mentor meating</td>
           </tr>
         </tbody>
       </table>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function renderFacultyPage() {
+  const content = document.getElementById("mainContent");
+  content.innerHTML = `
+    <button class="back-button" onclick="goBack()">
+      <i data-lucide="arrow-left"></i>
+      Back to Main
+    </button>
+    <h2>Faculty Members</h2>
+    
+    <div class="staff-section">
+      <h3>Information technolagy Department</h3>
+      <div class="staff-grid" id="staffGrid">
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">DR</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Kalpana</h4>
+              <p class="staff-role">Head of Department</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">15+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Information technolagy</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>r.johnson@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">MS</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Arokiya rubi</h4>
+              <p class="staff-role">Professor - foundation of data science</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">5+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: information technolagy</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>s.williams@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">PT</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Prof. Thomas Chen</h4>
+              <p class="staff-role">Professor - Web Development</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">10+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>t.chen@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">DM</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Dr. Maria Rodriguez</h4>
+              <p class="staff-role">Professor - AI & ML</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">18+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>m.rodriguez@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">JM</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Mr. James Miller</h4>
+              <p class="staff-role">Professor - Database Systems</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">14+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>j.miller@titans.edu</span>
+          </div>
+        </div>
+      </div>
     </div>
   `;
   lucide.createIcons();
@@ -1110,16 +1736,7 @@ function renderTab(tab){
     `;
     loadNews();
   }else if(tab==="chat"){
-    content.innerHTML=`
-      <h2>AI Chat Assistant</h2>
-      <div id='chatBox' style='max-height:300px;overflow-y:auto;padding:10px;border-radius:12px;background:var(--card-bg);backdrop-filter:blur(6px);box-shadow:0 0 8px var(--shadow);margin-bottom:10px;'>
-        <div class='fade-in'><strong>AI:</strong> Hi! I'm your study assistant 🤖. How can I help you today?</div>
-      </div>
-      <div style='display:flex;gap:6px;'>
-        <textarea id='chatInput' placeholder='Ask something...' style='flex:1;resize:none;height:50px;font-size:0.9rem;'></textarea>
-        <button class='primary' onclick='sendMessage()'>Send</button>
-      </div>
-    `;
+    renderAIChat();
   }else if(tab==="social"){
     content.innerHTML=`
       <h2>Social Feed</h2>
@@ -1187,7 +1804,7 @@ async function loadNews() {
   
   // Add external news section
   newsHTML += `
-    <h3 style="margin-top: 16px; font-size: 1.1rem;">Education News</h3>
+    <h3 style="margin-top: 16px; font-size: 1.1rem;">Technology News</h3>
     <div id="externalNews"></div>
   `;
   
@@ -1201,35 +1818,52 @@ async function loadExternalNews() {
   const externalContainer = document.getElementById("externalNews");
   
   try {
-    // For demo purposes, we'll use mock data
-    const mockNews = [
-      {
-        title: "New Study Shows Benefits of Digital Learning",
-        description: "Recent research indicates that students using digital learning platforms show 25% better retention rates.",
-        source: "Education Today",
-        publishedAt: "2023-10-15"
-      },
-      {
-        title: "Universities Adopt AI for Personalized Learning",
-        description: "Leading institutions are implementing AI systems to create customized learning paths for students.",
-        source: "Tech Education Review",
-        publishedAt: "2023-10-12"
-      }
-    ];
+    // Show loading state
+    externalContainer.innerHTML = `
+      <div class="loading">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+    `;
+
+    // Fetch real news from NewsAPI - Technology category
+    const response = await fetch(`https://newsapi.org/v2/top-headlines?category=technology&language=en&pageSize=6&apiKey=${NEWS_API_KEY}`);
+    
+    if (!response.ok) {
+      throw new Error(`News API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
     
     let externalHTML = "";
-    mockNews.forEach(news => {
-      externalHTML += `
-        <div class="card news-card">
-          <div class="news-title">${news.title}</div>
-          <div class="news-description">${news.description}</div>
-          <div class="news-meta">
-            <span>${news.source}</span>
-            <span>${new Date(news.publishedAt).toLocaleDateString()}</span>
-          </div>
+    
+    if (data.articles && data.articles.length > 0) {
+      data.articles.forEach(article => {
+        if (article.title && article.title !== "[Removed]") {
+          const description = article.description || 'No description available';
+          const truncatedDescription = description.length > 120 ? description.substring(0, 120) + '...' : description;
+          
+          externalHTML += `
+            <div class="card news-card">
+              <div class="news-title">${article.title}</div>
+              <div class="news-description">${truncatedDescription}</div>
+              <div class="news-meta">
+                <span>${article.source?.name || 'Unknown Source'}</span>
+                <span>${new Date(article.publishedAt).toLocaleDateString()}</span>
+              </div>
+              ${article.url ? `<a href="${article.url}" target="_blank" class="news-link">Read full article →</a>` : ''}
+            </div>
+          `;
+        }
+      });
+    } else {
+      externalHTML = `
+        <div class="card">
+          <p>No technology news available at the moment. Please check back later.</p>
         </div>
       `;
-    });
+    }
     
     externalContainer.innerHTML = externalHTML;
     
@@ -1238,48 +1872,269 @@ async function loadExternalNews() {
     externalContainer.innerHTML = `
       <div class="card">
         <p>Unable to load external news at this time. Please check your connection.</p>
+        <p style="font-size: 0.7rem; opacity: 0.7;">Error: ${error.message}</p>
       </div>
     `;
   }
 }
 
-/* --- GEMINI CHAT --- */
-async function sendMessage(){
-  const input=document.getElementById("chatInput");
-  const chatBox=document.getElementById("chatBox");
-  const userMsg=input.value.trim();
-  if(!userMsg)return;
+/* ======================= AI CHAT IMPLEMENTATION ======================= */
+let chatHistory = [];
+let currentChatId = null;
+let isTyping = false;
 
-  const userDiv=document.createElement("div");
-  userDiv.className="fade-in";
-  userDiv.innerHTML=`<strong>You:</strong> ${userMsg}`;
-  chatBox.appendChild(userDiv);
+// Initialize chat from localStorage
+function loadChatHistory() {
+  const saved = localStorage.getItem("chatHistory");
+  chatHistory = saved ? JSON.parse(saved) : [];
+}
 
-  const typingDiv=document.createElement("div");
-  typingDiv.className="fade-in";
-  typingDiv.innerHTML=`<strong>AI:</strong> <span class="typing">...</span>`;
-  chatBox.appendChild(typingDiv);
-  chatBox.scrollTop=chatBox.scrollHeight;
+function saveChatHistory() {
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
 
-  const GEMINI_API_KEY="PASTE_YOUR_GEMINI_API_KEY_HERE";
-  let replyText="Hmm... I couldn't fetch a response.";
-
-  try{
-    const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key="+GEMINI_API_KEY,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({contents:[{role:"user",parts:[{text:userMsg}]}]})
-    });
-    const data=await response.json();
-    replyText=data?.candidates?.[0]?.content?.parts?.[0]?.text||"I couldn't generate a reply right now.";
-  }catch(err){
-    replyText="⚠️ Error connecting to Gemini API.";
-    console.error(err);
+function renderAIChat() {
+  const content = document.getElementById("mainContent");
+  
+  content.innerHTML = `
+    <h2>AI Chat Assistant</h2>
+    
+    <div class="api-key-container" style="display: none;">
+      <label for="apiKeyInput">Gemini API Key:</label>
+      <div class="api-key-input">
+        <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key..." />
+        <button class="primary" onclick="saveApiKey()">Save</button>
+      </div>
+      <div id="apiKeyStatus" class="api-key-status valid">
+        ✅ API Key is pre-configured and ready to use!
+      </div>
+    </div>
+    
+    <div class="chat-container">
+      <div class="chat-header">
+        <i data-lucide="bot"></i>
+        <h3>Titan AI Assistant</h3>
+        <div class="chat-status">
+          <div class="status-indicator"></div>
+          <span>Online</span>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">
+          Hi! I'm your AI study assistant. I can help with homework, explain concepts, or just chat about your studies. How can I assist you today?
+        </div>
+      </div>
+      
+      <div class="chat-suggestions" id="chatSuggestions">
+        <div class="suggestion-chip" onclick="sendSuggestion('Explain data structures')">Explain data structures</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('Help with calculus homework')">Help with calculus</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('What is machine learning?')">What is ML?</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('Give me study tips')">Study tips</div>
+      </div>
+      
+      <div class="chat-input-container">
+        <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+        <button class="send-button" id="sendButton" onclick="sendMessage()">
+          <i data-lucide="send"></i>
+        </button>
+      </div>
+      
+      <div class="chat-actions">
+        <button class="clear-chat-button" onclick="clearChat()">
+          <i data-lucide="trash-2"></i>
+          Clear Chat
+        </button>
+      </div>
+    </div>
+    
+    <div class="chat-history" id="chatHistorySection" style="display: none;">
+      <h3>Chat History</h3>
+      <div id="chatHistoryList"></div>
+    </div>
+  `;
+  
+  lucide.createIcons();
+  
+  // Initialize chat
+  loadChatHistory();
+  setupChatInput();
+  
+  // Load current chat if exists
+  if (currentChatId) {
+    loadChat(currentChatId);
   }
+}
 
-  typingDiv.innerHTML=`<strong>AI:</strong> <span class='fade-in'>${replyText}</span>`;
-  chatBox.scrollTop=chatBox.scrollHeight;
-  input.value="";
+function setupChatInput() {
+  const chatInput = document.getElementById("chatInput");
+  const sendButton = document.getElementById("sendButton");
+  
+  // Auto-resize textarea
+  chatInput.addEventListener("input", function() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+    
+    // Enable/disable send button
+    sendButton.disabled = this.value.trim() === "";
+  });
+  
+  // Send message on Enter (but allow Shift+Enter for new line)
+  chatInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+}
+
+function sendSuggestion(text) {
+  document.getElementById("chatInput").value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const chatInput = document.getElementById("chatInput");
+  const message = chatInput.value.trim();
+  
+  if (!message || isTyping) return;
+  
+  // Clear input and reset height
+  chatInput.value = "";
+  chatInput.style.height = "auto";
+  document.getElementById("sendButton").disabled = true;
+  
+  // Add user message to chat
+  addMessageToChat(message, "user");
+  
+  // Show typing indicator
+  showTypingIndicator();
+  
+  try {
+    // Call Gemini API with the pre-configured key
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `You are a helpful study assistant for college students. Respond to the following query in a friendly, educational manner: ${message}`
+          }]
+        }]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Hide typing indicator
+    hideTypingIndicator();
+    
+    // Extract AI response
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                      "I'm sorry, I couldn't generate a response. Please try again.";
+    
+    // Add AI response to chat
+    addMessageToChat(aiResponse, "ai");
+    
+    // Save to chat history
+    saveCurrentChat();
+    
+  } catch (error) {
+    console.error("Error calling Gemini API:", error);
+    hideTypingIndicator();
+    addMessageToChat("Sorry, I encountered an error. Please try again.", "ai");
+  }
+}
+
+function addMessageToChat(message, sender) {
+  const chatMessages = document.getElementById("chatMessages");
+  
+  // Create message element
+  const messageDiv = document.createElement("div");
+  messageDiv.className = `message ${sender}-message`;
+  messageDiv.textContent = message;
+  
+  // Add to chat
+  chatMessages.appendChild(messageDiv);
+  
+  // Scroll to bottom
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  
+  // If this is a new chat, create a chat ID
+  if (!currentChatId) {
+    currentChatId = `chat_${Date.now()}`;
+  }
+  
+  // Add to current chat in memory
+  if (!chatHistory.find(chat => chat.id === currentChatId)) {
+    chatHistory.push({
+      id: currentChatId,
+      title: message.substring(0, 30) + (message.length > 30 ? "..." : ""),
+      messages: [],
+      timestamp: Date.now()
+    });
+  }
+  
+  const currentChat = chatHistory.find(chat => chat.id === currentChatId);
+  currentChat.messages.push({
+    sender,
+    text: message,
+    timestamp: Date.now()
+  });
+  
+  // Update chat title with first user message if it's the first message
+  if (currentChat.messages.length === 1 && sender === "user") {
+    currentChat.title = message.substring(0, 30) + (message.length > 30 ? "..." : "");
+  }
+}
+
+function showTypingIndicator() {
+  isTyping = true;
+  const chatMessages = document.getElementById("chatMessages");
+  
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "typing-indicator";
+  typingDiv.id = "typingIndicator";
+  typingDiv.innerHTML = `
+    <span>AI is typing</span>
+    <div class="typing-dots">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  
+  chatMessages.appendChild(typingDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+  isTyping = false;
+  const typingIndicator = document.getElementById("typingIndicator");
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
+}
+
+function clearChat() {
+  const chatMessages = document.getElementById("chatMessages");
+  chatMessages.innerHTML = '<div class="message ai-message">Hi! I\'m your AI study assistant. How can I help you today?</div>';
+  
+  // Reset current chat
+  currentChatId = null;
+  
+  // Scroll to top
+  chatMessages.scrollTop = 0;
+}
+
+function saveCurrentChat() {
+  saveChatHistory();
 }
 
 /* --- INIT --- */
