@@ -1220,6 +1220,83 @@ html, body {
     font-size: 1rem;
   }
 }
+
+/* ======================= NEWS WEBVIEW STYLES ======================= */
+.news-webview-container {
+  height: calc(100vh - 180px);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--shadow);
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  margin-top: 16px;
+}
+
+.news-webview-header {
+  background: var(--gradient);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.news-webview-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.news-webview-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.news-webview-controls button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.news-webview-controls button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.news-webview {
+  width: 100%;
+  height: calc(100% - 60px);
+  border: none;
+  background: white;
+}
+
+.news-webview-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  text-align: center;
+}
+
+.news-webview-loading h4 {
+  margin: 16px 0 8px 0;
+  color: var(--accent);
+}
+
+.news-webview-loading p {
+  margin: 0;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
 </style>
 </head>
 <body>
@@ -1456,7 +1533,7 @@ function renderSchedulePage() {
           <tr>
             <td>11:01-11:45</td>
             <td class="day-monday">discrete mathametics</td>
-            <td class="day-tuesday">discrete mathametics</td>
+            <td class="day-tuesday">discrete mathametics<</td>
             <td class="day-wednesday">foundation of dada science</td>
             <td class="day-thursday">digital principle and computer organization</td>
             <td class="day-friday">foundation of dada science</td>
@@ -1724,17 +1801,7 @@ function renderTab(tab){
     `;
     loadTodos();
   }else if(tab==="news"){
-    content.innerHTML=`
-      <h2>Latest News</h2>
-      <div id="newsContainer">
-        <div class="loading">
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-        </div>
-      </div>
-    `;
-    loadNews();
+    renderNewsPage();
   }else if(tab==="chat"){
     renderAIChat();
   }else if(tab==="social"){
@@ -1747,6 +1814,60 @@ function renderTab(tab){
   }
   lucide.createIcons();
 }
+
+function renderNewsPage() {
+  const content = document.getElementById("mainContent");
+  content.innerHTML = `
+    <h2>Latest News</h2>
+    
+    <div class="card">
+      <h3>Google News</h3>
+      <p>Access the latest news from around the world directly within the app.</p>
+    </div>
+    
+    <div class="news-webview-container">
+      <div class="news-webview-header">
+        <h3>Google News</h3>
+        <div class="news-webview-controls">
+          <button onclick="refreshNews()" title="Refresh">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+          <button onclick="openInBrowser()" title="Open in Browser">
+            <i data-lucide="external-link"></i>
+          </button>
+        </div>
+      </div>
+      <iframe class="news-webview" id="newsWebview" src="https://news.google.com" frameborder="0"></iframe>
+    </div>
+    
+    <div class="card" style="margin-top: 16px;">
+      <h4>Quick Campus Updates</h4>
+      <div style="font-size: 0.9rem;">
+        <p>📚 Library extended hours until 11 PM</p>
+        <p>💻 New computer lab equipment installed</p>
+        <p>🎓 Scholarship applications now open</p>
+      </div>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function refreshNews() {
+  const webview = document.getElementById("newsWebview");
+  webview.src = "https://news.google.com";
+  
+  // Show loading feedback
+  const originalSrc = webview.src;
+  webview.src = "about:blank";
+  setTimeout(() => {
+    webview.src = originalSrc;
+  }, 100);
+}
+
+function openInBrowser() {
+  window.open("https://news.google.com", "_blank");
+}
+
 function toggleExpand(card){card.classList.toggle("expanded");}
 
 /* --- TODO --- */
