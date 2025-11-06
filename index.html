@@ -7,227 +7,189 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root {
-  --primary: #4361ee;
-  --secondary: #3a0ca3;
-  --accent: #4361ee;
-  --accent-hover: #3a56d4;
-  --text-color: #2b2d42;
-  --bg-color: #f8f9fa;
-  --card-bg: #ffffff;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --card-bg: rgba(255,255,255,0.8);
+  --accent: #007bff;
+  --accent-hover: #0056b3;
+  --shadow: rgba(0,0,0,0.1);
+  --gradient: linear-gradient(135deg, #007bff, #00d4ff);
 }
 
-.dark {
-  --text-color: #f8f9fa;
+body.dark {
   --bg-color: #121212;
-  --card-bg: #1e1e1e;
-  --shadow: rgba(0, 0, 0, 0.3);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  --text-color: #e0e0e0;
+  --card-bg: rgba(30,30,30,0.7);
+  --accent: #0d6efd;
+  --shadow: rgba(255,255,255,0.05);
+  --gradient: linear-gradient(135deg, #0d6efd, #007bff);
 }
 
 body {
-  background: var(--bg-color);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
   color: var(--text-color);
-  transition: all 0.3s ease;
-  padding-bottom: 80px;
+  transition: background-color 0.4s, color 0.4s;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Header */
+/* ======================= SPLASH SCREEN ======================= */
+#splash {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--gradient);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  z-index: 9999;
+  overflow: hidden;
+  animation: fadeOut 1.3s ease forwards;
+  animation-delay: 2.5s;
+  transition: all 0.4s ease;
+}
+
+#splash-logo {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  animation: popIn 1.3s ease;
+}
+
+#splash-subtitle {
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  opacity: 0.8;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  animation: fadeIn 1.4s ease 0.6s forwards;
+  opacity: 0;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* Header with integrated news */
 header {
+  position: sticky;
+  top: 0;
   background: var(--gradient);
   color: white;
   padding: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
+  font-size: 1.3em;
+  font-weight: 600;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 12px var(--shadow);
+  backdrop-filter: blur(10px);
+  transform: translateY(-100%);
+  animation: slideDown 1.2s ease forwards 2.4s;
   z-index: 100;
+  overflow: hidden;
 }
+@keyframes slideDown { to { transform: translateY(0); } }
 
 .header-content {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-}
-
-.header-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.menu-toggle, .dark-mode-toggle {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.menu-toggle:hover, .dark-mode-toggle:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-/* News Ticker */
-.news-ticker {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 8px 16px;
-  display: flex;
   align-items: center;
-  overflow: hidden;
+  padding: 12px 16px;
   position: relative;
 }
 
+.header-title {
+  text-align: center;
+  flex: 1;
+  font-size: 1.2rem;
+}
+
+/* Simplified Menu Toggle */
+.menu-toggle {
+  position: absolute;
+  left: 16px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  transition: 0.3s;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-toggle:hover { opacity: 0.8; }
+
+.dark-mode-toggle {
+  position: absolute;
+  right: 16px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  padding: 6px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark-mode-toggle:hover { transform: rotate(20deg); }
+
+/* Integrated News Ticker */
+.news-ticker {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 6px 16px;
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 500;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .news-icon {
-  margin-right: 12px;
-  animation: pulse 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .news-ticker-content {
-  display: flex;
-  animation: ticker 30s linear infinite;
+  display: inline-block;
   white-space: nowrap;
+  animation: ticker 25s linear infinite;
 }
 
 .news-ticker-content span {
-  margin-right: 40px;
-  font-size: 0.9rem;
-  opacity: 0.9;
+  margin-right: 30px;
 }
 
 @keyframes ticker {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* Content */
-.content {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.tab-content {
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Cards */
-.card {
-  background: var(--card-bg);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 10px var(--shadow);
-  backdrop-filter: blur(8px);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px var(--shadow);
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease;
-}
-
-/* Navigation */
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--card-bg);
-  display: flex;
-  padding: 12px;
-  box-shadow: 0 -4px 12px var(--shadow);
-  z-index: 100;
-}
-
-nav button {
-  flex: 1;
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 8px;
-  color: var(--text-color);
-  opacity: 0.6;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 12px;
-}
-
-nav button.active {
-  opacity: 1;
-  color: var(--accent);
-}
-
-nav button:hover:not(.active) {
-  opacity: 0.8;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* Splash Screen */
-#splash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--gradient);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  z-index: 1000;
-  animation: splashFade 4s ease forwards;
-}
-
-#splash-logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  letter-spacing: -1px;
-}
-
-#splash-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
-@keyframes splashFade {
-  0% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
 }
 
 /* Slide Menu */
@@ -238,43 +200,16 @@ nav button:hover:not(.active) {
   width: 280px;
   height: 100%;
   background: var(--card-bg);
-  box-shadow: 4px 0 20px var(--shadow);
+  backdrop-filter: blur(15px);
+  box-shadow: 2px 0 15px var(--shadow);
   z-index: 200;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  padding: 20px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   overflow-y: auto;
+  padding: 20px 0;
 }
 
 .slide-menu.active {
-  left: 0;
-}
-
-.menu-header {
-  padding: 20px 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.menu-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 12px;
-  color: var(--text-color);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  margin-bottom: 8px;
-}
-
-.menu-item:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: translateX(5px);
+  transform: translateX(280px);
 }
 
 .menu-overlay {
@@ -284,11 +219,10 @@ nav button:hover:not(.active) {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 150;
+  z-index: 199;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
 }
 
 .menu-overlay.active {
@@ -296,200 +230,899 @@ nav button:hover:not(.active) {
   visibility: visible;
 }
 
-/* Back Button */
+.menu-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+.menu-header h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.menu-item:hover {
+  background: rgba(0, 123, 255, 0.1);
+  border-left-color: var(--accent);
+  transform: translateX(5px);
+}
+
+.menu-item i {
+  margin-right: 12px;
+  width: 20px;
+  text-align: center;
+}
+
+.content {
+  padding: 16px;
+  padding-bottom: 80px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease forwards 2.8s;
+}
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, background 0.4s, max-height 0.4s ease;
+  overflow: hidden;
+  max-height: 80px;
+  cursor: pointer;
+}
+.card:hover { transform: scale(1.02); }
+.card.expanded { max-height: 300px; }
+.card-content { opacity: 0; transition: opacity 0.3s ease; }
+.card.expanded .card-content { opacity: 1; }
+
+/* Enhanced Back Button */
 .back-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: var(--card-bg);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 10px 16px;
-  margin-bottom: 20px;
-  color: var(--text-color);
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.back-button:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: translateX(-3px);
-}
-
-/* To-Do Styles */
-#todoInput {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  margin-bottom: 12px;
-  background: var(--card-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-}
-
-.primary {
   background: var(--accent);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 12px 20px;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-bottom: 16px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.back-button:hover::before {
+  left: 100%;
+}
+
+.back-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
+}
+
+.back-button i {
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover i {
+  transform: translateX(-3px);
+}
+
+/* Mobile Optimized Schedule Table */
+.schedule-container {
+  overflow-x: auto;
+  margin-top: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadow);
+  -webkit-overflow-scrolling: touch;
+}
+
+.schedule-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.schedule-table th, .schedule-table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
+
+.schedule-table th {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  position: sticky;
+  left: 0;
+}
+
+.schedule-table tr:nth-child(even) {
+  background: rgba(0,0,0,0.03);
+}
+
+.break-row {
+  background: rgba(255, 193, 7, 0.1) !important;
+  font-weight: 600;
+  color: #ff9800;
+}
+
+.day-monday { border-left: 4px solid #FF6B6B; }
+.day-tuesday { border-left: 4px solid #4ECDC4; }
+.day-wednesday { border-left: 4px solid #FFD166; }
+.day-thursday { border-left: 4px solid #06D6A0; }
+.day-friday { border-left: 4px solid #118AB2; }
+.day-saturday { border-left: 4px solid #9B5DE5; }
+
+/* Events Page */
+.event-card {
+  display: flex;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px var(--shadow);
+  background: var(--card-bg);
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+}
+
+.event-date {
+  background: var(--accent);
+  color: white;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+}
+
+.event-date .day {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.event-date .month {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.event-details {
+  padding: 12px;
+  flex: 1;
+}
+
+.event-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.event-time {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.event-description {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  line-height: 1.3;
+}
+
+/* About Page */
+.about-section {
+  margin-bottom: 20px;
+}
+
+.about-section h3 {
+  color: var(--accent);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 4px;
+  font-size: 1.1rem;
+}
+
+.dev-card {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.dev-card:hover {
+  transform: translateX(3px);
+}
+
+.dev-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.dev-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+}
+
+.dev-info p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 0.8rem;
+}
+
+/* News Card Styles */
+.news-card {
+  max-height: none;
+  cursor: default;
+  margin-bottom: 16px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.news-card:hover {
+  transform: translateY(-3px);
+}
+
+.news-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.news-description {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.news-link {
+  color: var(--accent);
+  font-size: 0.7rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 6px;
   font-weight: 600;
 }
 
-.primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
+.news-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Optimized Navigation */
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card-bg);
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #ccc;
+  padding: 8px 0;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+nav button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex: 1;
+  padding: 6px 0;
+  position: relative;
+}
+nav button.active { 
+  color: var(--accent); 
+  transform: translateY(-6px);
+}
+nav button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+nav button span {
+  font-size: 0.65rem;
+  margin-top: 2px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  backdrop-filter: blur(6px);
+  font-size: 0.9em;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+input:focus {
+  outline: none;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+button.primary {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: 0.3s ease;
+}
+button.primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+.todo-text { flex: 1; margin-left: 8px; word-break: break-word; transition: 0.3s; font-size: 0.9rem; }
+.todo-item.completed .todo-text { text-decoration: line-through; opacity: 0.6; }
+.todo-buttons { display: flex; gap: 4px; }
+
+.fade-in { animation: fadeIn 0.5s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-out { animation: slideOut 0.4s forwards; }
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
 }
 
-.todo-item.completed .todo-text {
-  text-decoration: line-through;
-  opacity: 0.6;
+/* --- Chat Animation --- */
+.typing {
+  display: inline-block;
+  width: 1ch;
+  overflow: hidden;
+  animation: blink 1s steps(1) infinite;
 }
+@keyframes blink { 50% { opacity: 0; } }
 
-.todo-buttons {
+/* Loading animation */
+.loading {
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
 }
 
-.todo-buttons button {
-  border-radius: 8px;
-  border: none;
+.loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  margin: 0 3px;
+  animation: loading 1.4s ease-in-out infinite both;
+}
+
+.loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes loading {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+/* Improved animations for iOS-like smoothness */
+.card, .todo-item, .news-card, .event-card, .dev-card {
+  animation: cardAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes cardAppear {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Tab transition */
+.tab-content {
+  animation: tabSwitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes tabSwitch {
+  0% { opacity: 0; transform: translateX(20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.1rem;
+  }
+  
+  .content {
+    padding: 12px;
+    padding-bottom: 70px;
+  }
+  
+  .card {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  nav button span {
+    font-size: 0.6rem;
+  }
+  
+  .event-date {
+    min-width: 60px;
+    padding: 10px;
+  }
+  
+  .event-date .day {
+    font-size: 1.1rem;
+  }
+  
+  .dev-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ======================= AI CHAT STYLES ======================= */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  max-height: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--shadow);
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+}
+
+.chat-header {
+  background: var(--gradient);
   color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chat-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-message {
+  align-self: flex-end;
+  background: var(--accent);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-message {
+  align-self: flex-start;
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-bottom-left-radius: 4px;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.chat-input-container {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  background: var(--card-bg);
+}
+
+.chat-input {
+  flex: 1;
+  border-radius: 24px;
+  padding: 10px 16px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  resize: none;
+  max-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.send-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.send-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.send-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 12px 12px;
+  background: var(--card-bg);
+}
+
+.suggestion-chip {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.todo-buttons button:hover {
-  transform: scale(1.05);
+.suggestion-chip:hover {
+  background: rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
 }
 
-.slide-out {
-  animation: slideOut 0.35s ease forwards;
-}
-
-@keyframes slideOut {
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-/* Event Cards */
-.event-card {
+.chat-actions {
   display: flex;
-  gap: 16px;
-  padding: 20px;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.clear-chat-button {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.clear-chat-button:hover {
+  background: rgba(255, 0, 0, 0.1);
+  color: #ff4444;
+}
+
+/* API Key Input */
+.api-key-container {
   margin-bottom: 16px;
 }
 
-.event-date {
-  background: var(--gradient);
-  color: white;
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  min-width: 70px;
+.api-key-input {
+  display: flex;
+  gap: 8px;
 }
 
-.event-day {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.event-month {
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
-
-.event-details {
+.api-key-input input {
   flex: 1;
 }
 
-.event-title {
-  font-weight: 600;
-  margin-bottom: 6px;
-  font-size: 1.1rem;
+.api-key-status {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.event-time {
-  opacity: 0.7;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
+.api-key-status.valid {
+  color: #06d6a0;
 }
 
-.event-description {
-  opacity: 0.8;
-  font-size: 0.95rem;
-  line-height: 1.4;
+.api-key-status.invalid {
+  color: #ff6b6b;
 }
 
-/* Schedule Table */
-.schedule-container {
-  overflow-x: auto;
+/* Chat History */
+.chat-history {
+  margin-top: 16px;
 }
 
-.schedule-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--card-bg);
+.chat-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
   border-radius: 12px;
+  background: var(--card-bg);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-history-item:hover {
+  background: rgba(0, 123, 255, 0.1);
+  transform: translateX(3px);
+}
+
+.chat-history-preview {
+  font-size: 0.8rem;
+  opacity: 0.7;
   overflow: hidden;
-  box-shadow: 0 4px 10px var(--shadow);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 10px;
 }
 
-.schedule-table th, .schedule-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+.chat-history-date {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 
-.schedule-table th {
-  background: var(--gradient);
-  color: white;
-  font-weight: 600;
+/* Responsive adjustments for chat */
+@media (max-width: 480px) {
+  .chat-container {
+    height: calc(100vh - 180px);
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .chat-suggestions {
+    padding: 0 8px 8px;
+  }
+  
+  .suggestion-chip {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
 }
 
-.schedule-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* Staff Cards */
+/* ======================= FACULTY STYLES ======================= */
 .staff-section {
-  margin-bottom: 30px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .staff-section h3 {
-  margin-bottom: 16px;
   color: var(--accent);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 6px;
+  font-size: 1.1rem;
 }
 
 .staff-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
 }
 
 .staff-card {
-  padding: 20px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 10px var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 4px solid var(--accent);
+  animation: staffCardAppear 0.6s ease-out both;
+  transform-origin: center bottom;
+}
+
+.staff-card:nth-child(1) { animation-delay: 0.1s; }
+.staff-card:nth-child(2) { animation-delay: 0.2s; }
+.staff-card:nth-child(3) { animation-delay: 0.3s; }
+.staff-card:nth-child(4) { animation-delay: 0.4s; }
+.staff-card:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes staffCardAppear {
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+.staff-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px var(--shadow);
 }
 
 .staff-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .staff-avatar {
@@ -503,54 +1136,136 @@ nav button:hover:not(.active) {
   color: white;
   font-weight: 700;
   font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.staff-info {
+  flex: 1;
 }
 
 .staff-name {
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
+  color: var(--text-color);
 }
 
 .staff-role {
-  opacity: 0.7;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin: 0;
 }
 
-/* About Page */
-.about-section {
-  margin-bottom: 30px;
-}
-
-.dev-card {
+.staff-experience {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.9;
 }
 
-.dev-avatar {
-  width: 60px;
-  height: 60px;
+.experience-badge {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--accent);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.staff-department {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.staff-contact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* iOS-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+  .staff-card {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .staff-card:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  .staff-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .staff-card {
+    padding: 14px;
+  }
+  
+  .staff-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+}
+
+/* ======================= MEDIASTACK NEWS STYLES ======================= */
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.news-title {
+  flex: 1;
+  margin: 0;
+}
+
+.refresh-button {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 50%;
-  background: var(--gradient);
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-color);
 }
 
-.dev-info h4 {
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 1.2rem;
+.refresh-button:hover {
+  background: rgba(0, 123, 255, 0.1);
+  transform: rotate(180deg);
 }
 
-.dev-info p {
-  opacity: 0.7;
+.refresh-button.loading {
+  animation: spin 1s linear infinite;
 }
 
-/* News Categories */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .news-categories {
   display: flex;
   gap: 8px;
@@ -580,7 +1295,6 @@ nav button:hover:not(.active) {
   background: rgba(0, 123, 255, 0.1);
 }
 
-/* Enhanced News Container */
 .news-container {
   max-height: calc(100vh - 250px);
   overflow-y: auto;
@@ -606,7 +1320,6 @@ nav button:hover:not(.active) {
   background: var(--accent-hover);
 }
 
-/* News Grid Layout */
 .news-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -614,7 +1327,6 @@ nav button:hover:not(.active) {
   padding: 8px 0;
 }
 
-/* Enhanced News Cards */
 .mediastack-news-card {
   background: var(--card-bg);
   border-radius: 16px;
@@ -647,17 +1359,6 @@ nav button:hover:not(.active) {
 .mediastack-news-card:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 8px 25px var(--shadow);
-}
-
-@keyframes cardAppear {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .mediastack-news-title {
@@ -726,7 +1427,6 @@ nav button:hover:not(.active) {
   color: var(--accent-hover);
 }
 
-/* News Image */
 .news-image {
   width: 100%;
   height: 180px;
@@ -750,7 +1450,6 @@ nav button:hover:not(.active) {
   margin-bottom: 12px;
 }
 
-/* Loading States */
 .mediastack-loading {
   display: flex;
   flex-direction: column;
@@ -771,32 +1470,6 @@ nav button:hover:not(.active) {
   font-size: 0.9rem;
 }
 
-.loading {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.loading-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: loadingBounce 1.4s ease-in-out infinite both;
-}
-
-.loading-dot:nth-child(1) { animation-delay: -0.32s; }
-.loading-dot:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes loadingBounce {
-  0%, 80%, 100% {
-    transform: scale(0);
-  } 40% {
-    transform: scale(1);
-  }
-}
-
-/* Error States */
 .mediastack-error {
   background: var(--card-bg);
   border-radius: 16px;
@@ -835,50 +1508,6 @@ nav button:hover:not(.active) {
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
-/* News Header */
-.news-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.news-title {
-  flex: 1;
-  margin: 0;
-}
-
-.refresh-button {
-  background: var(--card-bg);
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--text-color);
-}
-
-.refresh-button:hover {
-  background: rgba(0, 123, 255, 0.1);
-  transform: rotate(180deg);
-}
-
-.refresh-button.loading {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* News Counter */
 .news-counter {
   font-size: 0.8rem;
   opacity: 0.7;
@@ -957,7 +1586,8 @@ nav button:hover:not(.active) {
 </nav>
 
 <script>
-// MediaStack API Configuration
+/* --- API KEYS --- */
+const GEMINI_API_KEY = "AIzaSyDMYFcYpFanzTQXj7P-l1uM_KQz5xjom_c";
 const MEDIASTACK_API_KEY = "27b37be5989fc39f677bea8376543d48";
 const MEDIASTACK_BASE_URL = "https://api.mediastack.com/v1/news";
 
@@ -1027,7 +1657,7 @@ function showPage(page) {
   
   const content = document.getElementById("mainContent");
   content.classList.remove("tab-content");
-  void content.offsetWidth;
+  void content.offsetWidth; // Trigger reflow
   content.classList.add("tab-content");
   
   if (page === "events") {
@@ -1056,8 +1686,8 @@ function renderEventsPage() {
     <h2>College Events</h2>
     <div class="event-card">
       <div class="event-date">
-        <div class="event-day">07</div>
-        <div class="event-month">NOV</div>
+        <div class="day">07</div>
+        <div class="month">NOV</div>
       </div>
       <div class="event-details">
         <div class="event-title">PSNA TECKNOWFEST'2025</div>
@@ -1067,13 +1697,24 @@ function renderEventsPage() {
     </div>
     <div class="event-card">
       <div class="event-date">
-        <div class="event-day">22</div>
-        <div class="event-month">OCT</div>
+        <div class="day">22</div>
+        <div class="month">OCT</div>
       </div>
       <div class="event-details">
         <div class="event-title">Career Fair</div>
         <div class="event-time">10:00 AM - 4:00 PM | Sports Complex</div>
         <div class="event-description">Connect with top companies and explore internship and job opportunities.</div>
+      </div>
+    </div>
+    <div class="event-card">
+      <div class="event-date">
+        <div class="day">05</div>
+        <div class="month">NOV</div>
+      </div>
+      <div class="event-details">
+        <div class="event-title">Cultural Night</div>
+        <div class="event-time">6:00 PM - 11:00 PM | Open Air Theater</div>
+        <div class="event-description">An evening of music, dance, and performances by talented students.</div>
       </div>
     </div>
   `;
@@ -1098,6 +1739,7 @@ function renderSchedulePage() {
             <th>Wednesday</th>
             <th>Thursday</th>
             <th>Friday</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -1108,6 +1750,7 @@ function renderSchedulePage() {
             <td class="day-wednesday">digital principle and computer organization</td>
             <td class="day-thursday">data structure and algoritham using python</td>
             <td class="day-friday">object orianted programing using java</td>
+            
           </tr>
           <tr>
             <td>9:51-10:35</td>
@@ -1116,6 +1759,57 @@ function renderSchedulePage() {
             <td class="day-wednesday">object orianted programing using java</td>
             <td class="day-thursday">foundation of dada science</td>
             <td class="day-friday">discrete mathametics</td>
+           
+          </tr>
+          <tr class="break-row">
+            <td>10:36-11:00</td>
+            <td colspan="6" style="text-align: center; font-weight: 600;">BREAK</td>
+          </tr>
+          <tr>
+            <td>11:01-11:45</td>
+            <td class="day-monday">discrete mathametics</td>
+            <td class="day-tuesday">discrete mathametics</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">digital principle and computer organization</td>
+            <td class="day-friday">foundation of dada science</td>
+           
+          </tr>
+          <tr>
+            <td>11:46-12:30</td>
+            <td class="day-monday">digital principle and computer organization</td>
+            <td class="day-tuesday">object orianted programing using java</td>
+            <td class="day-wednesday">data structure and algoritham using python</td>
+            <td class="day-thursday">digital principle and computer organization</td>
+            <td class="day-friday">foundation of dada science</td>
+            
+          </tr>
+          <tr class="break-row">
+            <td>12:31-1:15</td>
+            <td colspan="6" style="text-align: center; font-weight: 600;">LUNCH BREAK</td>
+          </tr>
+          <tr>
+            <td>1:16-2:00</td>
+            <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">library</td>
+            <td class="day-friday">core training</td>
+          </tr>
+          <tr>
+            <td>2:01-2:45</td>
+           <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">discrete mathametics</td>
+            <td class="day-friday">discrete mathametics</td>
+          </tr>
+          <tr>
+            <td>2:46-3:30</td>
+            <td class="day-monday">object orianted programing using java</td>
+            <td class="day-tuesday">data structure and algoritham using python</td>
+            <td class="day-wednesday">foundation of dada science</td>
+            <td class="day-thursday">object orianted programing using java</td>
+            <td class="day-friday">mentor meating</td>
           </tr>
         </tbody>
       </table>
@@ -1132,9 +1826,10 @@ function renderFacultyPage() {
       Back to Main
     </button>
     <h2>Faculty Members</h2>
+    
     <div class="staff-section">
-      <h3>Information Technology Department</h3>
-      <div class="staff-grid">
+      <h3>Information technolagy Department</h3>
+      <div class="staff-grid" id="staffGrid">
         <div class="staff-card">
           <div class="staff-header">
             <div class="staff-avatar">DR</div>
@@ -1142,6 +1837,111 @@ function renderFacultyPage() {
               <h4 class="staff-name">Kalpana</h4>
               <p class="staff-role">Head of Department</p>
             </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">15+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Information technolagy</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>r.johnson@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">MS</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Arokiya rubi</h4>
+              <p class="staff-role">Professor - foundation of data science</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">5+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: information technolagy</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>s.williams@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">PT</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Prof. Thomas Chen</h4>
+              <p class="staff-role">Professor - Web Development</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">10+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>t.chen@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">DM</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Dr. Maria Rodriguez</h4>
+              <p class="staff-role">Professor - AI & ML</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">18+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>m.rodriguez@titans.edu</span>
+          </div>
+        </div>
+        
+        <div class="staff-card">
+          <div class="staff-header">
+            <div class="staff-avatar">JM</div>
+            <div class="staff-info">
+              <h4 class="staff-name">Mr. James Miller</h4>
+              <p class="staff-role">Professor - Database Systems</p>
+            </div>
+          </div>
+          <div class="staff-experience">
+            <i data-lucide="award"></i>
+            <span>Experience:</span>
+            <div class="experience-badge">14+ years</div>
+          </div>
+          <div class="staff-department">
+            <i data-lucide="building"></i>
+            <span>Department: Computer Science</span>
+          </div>
+          <div class="staff-contact">
+            <i data-lucide="mail"></i>
+            <span>j.miller@titans.edu</span>
           </div>
         </div>
       </div>
@@ -1158,6 +1958,12 @@ function renderAboutPage() {
       Back to Main
     </button>
     <h2>About Titans Student Hub</h2>
+    
+    <div class="about-section">
+      <h3>Our Department</h3>
+      <p>The Computer Science Department at Titans University is committed to excellence in education and research. We offer cutting-edge programs that prepare students for successful careers in technology.</p>
+    </div>
+    
     <div class="about-section">
       <h3>Development Team</h3>
       <div class="dev-card">
@@ -1167,6 +1973,27 @@ function renderAboutPage() {
           <p>Lead Developer & UI/UX Designer</p>
         </div>
       </div>
+      <div class="dev-card">
+        <div class="dev-avatar">P</div>
+        <div class="dev-info">
+          <h4>Praveenraj</h4>
+          <p>Lead Developer & Animation Specialist</p>
+        </div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-avatar">S</div>
+        <div class="dev-info">
+          <h4>Sriram</h4>
+          <p>Technical Support Contributor</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="about-section">
+      <h3>Contact Information</h3>
+      <p>Email: support@titanshub.edu</p>
+      <p>Phone: (555) 123-4567</p>
+      <p>Location: Computer Science Building, Room 305</p>
     </div>
   `;
   lucide.createIcons();
@@ -1180,9 +2007,10 @@ function setActiveTab(tab){
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
   document.getElementById(tab+"Tab").classList.add("active");
   
+  // Add tab transition effect
   const content = document.getElementById("mainContent");
   content.classList.remove("tab-content");
-  void content.offsetWidth;
+  void content.offsetWidth; // Trigger reflow
   content.classList.add("tab-content");
   
   renderTab(tab);
@@ -1196,6 +2024,8 @@ function renderTab(tab){
     content.innerHTML=`
       <h2>Class Tasks</h2>
       <div class='card fade-in' onclick='toggleExpand(this)'><h3>Data Structures Lecture</h3><div class='card-content'><p>Study Heap, Graph & Tree implementations with code examples.</p></div></div>
+      <div class='card fade-in' onclick='toggleExpand(this)'><h3>Web Project</h3><div class='card-content'><p>Build a modern student hub web app with animations and dark mode.</p></div></div>
+      <div class='card fade-in' onclick='toggleExpand(this)'><h3>IPR Session</h3><div class='card-content'><p>Learn about Intellectual Property Rights and its impact in innovation.</p></div></div>
     `;
   }else if(tab==="todo"){
     content.innerHTML=`
@@ -1213,10 +2043,23 @@ function renderTab(tab){
     content.innerHTML=`
       <h2>Social Feed</h2>
       <div class='card fade-in'><strong>Ravi:</strong> Finished my Python app! 🔥</div>
+      <div class='card fade-in'><strong>Meena:</strong> Excited for tech fest 🎉</div>
+      <div class='card fade-in'><strong>Alex:</strong> Anyone want to study for the calculus exam together?</div>
     `;
   }
   lucide.createIcons();
 }
+
+function toggleExpand(card){card.classList.toggle("expanded");}
+
+/* --- TODO --- */
+let todos=[];
+function loadTodos(){const saved=localStorage.getItem("todos");todos=saved?JSON.parse(saved):[];renderTodos();}
+function saveTodos(){localStorage.setItem("todos",JSON.stringify(todos));}
+function addTodo(){const input=document.getElementById("todoInput");const text=input.value.trim();if(!text)return;todos.push({id:Date.now(),text,completed:false});saveTodos();renderTodos();input.value="";}
+function toggleTodo(id){const todo=todos.find(t=>t.id===id);todo.completed=!todo.completed;saveTodos();renderTodos();}
+function deleteTodo(id){const el=document.querySelector(`[data-id='${id}']`);el.classList.add("slide-out");setTimeout(()=>{todos=todos.filter(t=>t.id!==id);saveTodos();renderTodos();},350);}
+function renderTodos(){const list=document.getElementById("todoList");if(!list)return;list.innerHTML="";todos.forEach(t=>{const div=document.createElement("div");div.className=`card todo-item fade-in ${t.completed?"completed":""}`;div.dataset.id=t.id;div.innerHTML=`<div class='todo-text'>${t.text}</div><div class='todo-buttons'><button class='primary' style='background:${t.completed?"orange":"limegreen"};padding:6px 8px;' onclick='toggleTodo(${t.id})'><i data-lucide='${t.completed?"rotate-ccw":"check"}'></i></button><button class='primary' style='background:red;padding:6px 8px;' onclick='deleteTodo(${t.id})'><i data-lucide='trash-2'></i></button></div>`;list.appendChild(div);});lucide.createIcons();}
 
 /* --- MEDIASTACK NEWS READER --- */
 function renderMediaStackNews() {
@@ -1459,26 +2302,263 @@ function trackNewsClick(category) {
   console.log(`News clicked from category: ${category}`);
 }
 
-/* --- TODO --- */
-let todos=[];
-function loadTodos(){const saved=localStorage.getItem("todos");todos=saved?JSON.parse(saved):[];renderTodos();}
-function saveTodos(){localStorage.setItem("todos",JSON.stringify(todos));}
-function addTodo(){const input=document.getElementById("todoInput");const text=input.value.trim();if(!text)return;todos.push({id:Date.now(),text,completed:false});saveTodos();renderTodos();input.value="";}
-function toggleTodo(id){const todo=todos.find(t=>t.id===id);todo.completed=!todo.completed;saveTodos();renderTodos();}
-function deleteTodo(id){const el=document.querySelector(`[data-id='${id}']`);el.classList.add("slide-out");setTimeout(()=>{todos=todos.filter(t=>t.id!==id);saveTodos();renderTodos();},350);}
-function renderTodos(){const list=document.getElementById("todoList");if(!list)return;list.innerHTML="";todos.forEach(t=>{const div=document.createElement("div");div.className=`card todo-item fade-in ${t.completed?"completed":""}`;div.dataset.id=t.id;div.innerHTML=`<div class='todo-text'>${t.text}</div><div class='todo-buttons'><button class='primary' style='background:${t.completed?"orange":"limegreen"};padding:6px 8px;' onclick='toggleTodo(${t.id})'><i data-lucide='${t.completed?"rotate-ccw":"check"}'></i></button><button class='primary' style='background:red;padding:6px 8px;' onclick='deleteTodo(${t.id})'><i data-lucide='trash-2'></i></button></div>`;list.appendChild(div);});lucide.createIcons();}
+/* ======================= AI CHAT IMPLEMENTATION ======================= */
+let chatHistory = [];
+let currentChatId = null;
+let isTyping = false;
 
-function toggleExpand(card){card.classList.toggle("expanded");}
+// Initialize chat from localStorage
+function loadChatHistory() {
+  const saved = localStorage.getItem("chatHistory");
+  chatHistory = saved ? JSON.parse(saved) : [];
+}
 
-/* --- AI CHAT (simplified) --- */
+function saveChatHistory() {
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
+
 function renderAIChat() {
   const content = document.getElementById("mainContent");
+  
   content.innerHTML = `
     <h2>AI Chat Assistant</h2>
-    <div class="card">
-      <p>AI Chat feature would be implemented here with Gemini API.</p>
+    
+    <div class="api-key-container" style="display: none;">
+      <label for="apiKeyInput">Gemini API Key:</label>
+      <div class="api-key-input">
+        <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key..." />
+        <button class="primary" onclick="saveApiKey()">Save</button>
+      </div>
+      <div id="apiKeyStatus" class="api-key-status valid">
+        ✅ API Key is pre-configured and ready to use!
+      </div>
+    </div>
+    
+    <div class="chat-container">
+      <div class="chat-header">
+        <i data-lucide="bot"></i>
+        <h3>Titan AI Assistant</h3>
+        <div class="chat-status">
+          <div class="status-indicator"></div>
+          <span>Online</span>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">
+          Hi! I'm your AI study assistant. I can help with homework, explain concepts, or just chat about your studies. How can I assist you today?
+        </div>
+      </div>
+      
+      <div class="chat-suggestions" id="chatSuggestions">
+        <div class="suggestion-chip" onclick="sendSuggestion('Explain data structures')">Explain data structures</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('Help with calculus homework')">Help with calculus</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('What is machine learning?')">What is ML?</div>
+        <div class="suggestion-chip" onclick="sendSuggestion('Give me study tips')">Study tips</div>
+      </div>
+      
+      <div class="chat-input-container">
+        <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+        <button class="send-button" id="sendButton" onclick="sendMessage()">
+          <i data-lucide="send"></i>
+        </button>
+      </div>
+      
+      <div class="chat-actions">
+        <button class="clear-chat-button" onclick="clearChat()">
+          <i data-lucide="trash-2"></i>
+          Clear Chat
+        </button>
+      </div>
+    </div>
+    
+    <div class="chat-history" id="chatHistorySection" style="display: none;">
+      <h3>Chat History</h3>
+      <div id="chatHistoryList"></div>
     </div>
   `;
+  
+  lucide.createIcons();
+  
+  // Initialize chat
+  loadChatHistory();
+  setupChatInput();
+  
+  // Load current chat if exists
+  if (currentChatId) {
+    loadChat(currentChatId);
+  }
+}
+
+function setupChatInput() {
+  const chatInput = document.getElementById("chatInput");
+  const sendButton = document.getElementById("sendButton");
+  
+  // Auto-resize textarea
+  chatInput.addEventListener("input", function() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+    
+    // Enable/disable send button
+    sendButton.disabled = this.value.trim() === "";
+  });
+  
+  // Send message on Enter (but allow Shift+Enter for new line)
+  chatInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+}
+
+function sendSuggestion(text) {
+  document.getElementById("chatInput").value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const chatInput = document.getElementById("chatInput");
+  const message = chatInput.value.trim();
+  
+  if (!message || isTyping) return;
+  
+  // Clear input and reset height
+  chatInput.value = "";
+  chatInput.style.height = "auto";
+  document.getElementById("sendButton").disabled = true;
+  
+  // Add user message to chat
+  addMessageToChat(message, "user");
+  
+  // Show typing indicator
+  showTypingIndicator();
+  
+  try {
+    // Call Gemini API with the pre-configured key
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `You are a helpful study assistant for college students. Respond to the following query in a friendly, educational manner: ${message}`
+          }]
+        }]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Hide typing indicator
+    hideTypingIndicator();
+    
+    // Extract AI response
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                      "I'm sorry, I couldn't generate a response. Please try again.";
+    
+    // Add AI response to chat
+    addMessageToChat(aiResponse, "ai");
+    
+    // Save to chat history
+    saveCurrentChat();
+    
+  } catch (error) {
+    console.error("Error calling Gemini API:", error);
+    hideTypingIndicator();
+    addMessageToChat("Sorry, I encountered an error. Please try again.", "ai");
+  }
+}
+
+function addMessageToChat(message, sender) {
+  const chatMessages = document.getElementById("chatMessages");
+  
+  // Create message element
+  const messageDiv = document.createElement("div");
+  messageDiv.className = `message ${sender}-message`;
+  messageDiv.textContent = message;
+  
+  // Add to chat
+  chatMessages.appendChild(messageDiv);
+  
+  // Scroll to bottom
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  
+  // If this is a new chat, create a chat ID
+  if (!currentChatId) {
+    currentChatId = `chat_${Date.now()}`;
+  }
+  
+  // Add to current chat in memory
+  if (!chatHistory.find(chat => chat.id === currentChatId)) {
+    chatHistory.push({
+      id: currentChatId,
+      title: message.substring(0, 30) + (message.length > 30 ? "..." : ""),
+      messages: [],
+      timestamp: Date.now()
+    });
+  }
+  
+  const currentChat = chatHistory.find(chat => chat.id === currentChatId);
+  currentChat.messages.push({
+    sender,
+    text: message,
+    timestamp: Date.now()
+  });
+  
+  // Update chat title with first user message if it's the first message
+  if (currentChat.messages.length === 1 && sender === "user") {
+    currentChat.title = message.substring(0, 30) + (message.length > 30 ? "..." : "");
+  }
+}
+
+function showTypingIndicator() {
+  isTyping = true;
+  const chatMessages = document.getElementById("chatMessages");
+  
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "typing-indicator";
+  typingDiv.id = "typingIndicator";
+  typingDiv.innerHTML = `
+    <span>AI is typing</span>
+    <div class="typing-dots">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  
+  chatMessages.appendChild(typingDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+  isTyping = false;
+  const typingIndicator = document.getElementById("typingIndicator");
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
+}
+
+function clearChat() {
+  const chatMessages = document.getElementById("chatMessages");
+  chatMessages.innerHTML = '<div class="message ai-message">Hi! I\'m your AI study assistant. How can I help you today?</div>';
+  
+  // Reset current chat
+  currentChatId = null;
+  
+  // Scroll to top
+  chatMessages.scrollTop = 0;
+}
+
+function saveCurrentChat() {
+  saveChatHistory();
 }
 
 /* --- INIT --- */
